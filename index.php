@@ -1,23 +1,30 @@
 <?php
-
-
-INCLUDE 'src/controllers/AdminController.php';
+require_once 'src/controllers/AdminController.php';
+require_once 'src/controllers/BasicoController.php';
+require_once 'src/controllers/EventosController.php';
 
 echo "<pre>";
 
 //Pegar a rota da URL
 $requisicao = $_SERVER['REQUEST_URI'];
+echo $requisicao;
 
 //Roteamento
-$aux = '/jabulani-eventos/';
+$aux = '/app-jabulani/';
 switch ($requisicao) {
 
     //Rotas para Sistema de paginas 
     case $aux.'admin/login':  
         AdminController::formLogin();
         break;
-    case $aux.'/admin/autenticar':  
+    case $aux.'admin/autenticar':  
         AdminController::autenticar();
+        break;
+    case $aux.'principal':  
+        BasicoController::principal();
+        break;
+    case $aux.'listarEventos':  
+        EventosController::listarEventos();
         break;
     default:
         echo "Página não encontrada!";
