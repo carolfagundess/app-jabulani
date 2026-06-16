@@ -26,6 +26,12 @@ switch ($requisicao) {
     case $aux.'listarEventos':  
         EventosController::listarEventos();
         break;
+    case $aux.'formInserirEvento':
+        EventosController::formInserirEvento();
+        break;
+    case $aux.'inserirEvento':
+        EventosController::inserirEvento();
+        break;
     default:
         echo "Página não encontrada!";
         break;

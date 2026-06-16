@@ -16,7 +16,7 @@
                 <td><?=$evento['local']?></td>
                 <td><?=$evento['dataEvento']?></td>
                 <td>
-                    <form action="/web2-26/projetos/mvc/formAlterarEvento" method="post">
+                    <form action="/app-jabulani/alterarEvento" method="post">
                         <input type="hidden" name="id" value="<?=$evento['id']?>">
                         <input type="submit" value="Alterar">
                     </form>
@@ -28,6 +28,6 @@
 
     </table>
     <p>Inserir um novo evento?</p>
-    <a href = "/app-jabulani/src/views/formInserirEvento.php">Inserir Evento</a>
+    <a href = "/app-jabulani/formInserirEvento">Inserir Evento</a>
 </body>
 </html>
