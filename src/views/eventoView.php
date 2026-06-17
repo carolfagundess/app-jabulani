@@ -20,6 +20,10 @@
                         <input type="hidden" name="id" value="<?=$evento['id']?>">
                         <input type="submit" value="Alterar">
                     </form>
+                    <form action="/app-jabulani/excluirEvento" method="post">
+                        <input type="hidden" name="id" value="<?=$evento['id']?>">
+                        <input type="submit" value="Excluir">
+                    </form>
                 </td>
                 </tr>
             <?php
