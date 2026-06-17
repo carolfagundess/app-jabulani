@@ -44,4 +44,18 @@ class EventosController{
             echo "Mensagem de erro: Faltam dados no formulário ou método incorreto.";
         }
     }
+
+    public static function alterarEvento(): void {
+        if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['id']) && isset($_POST['nome'])) {
+            $auxId = (int) trim($_POST['id']);
+            $auxNome = trim($_POST['nome']);
+
+            require_once 'src/models/EventoModel.php';
+
+            $eventos = new EventoDao();
+            $retorno = $eventos->getEventoById($auxId);
+        
+
+        }
+    }
 }
