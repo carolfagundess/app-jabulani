@@ -18,6 +18,15 @@ class EventoDao
         $stmt->execute();
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
+    public function getEventosById(int $id)
+    {
+        $sql = "SELECT id, titulo, descricao, `local`, dataEvento, registroCriado FROM eventos WHERE id = ?";
+        $stmt = $this->conexao->prepare($sql);
+        $stmt->bindParam(1, $id, PDO::PARAM_INT);
+        $stmt->execute();
+        return $stmt->fetch(PDO::FETCH_ASSOC);   
+        }
+
 
     public function inserirEvento(string $titulo, string $descricao, string $local, string $dataEvento):bool{
         try{
