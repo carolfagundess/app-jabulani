@@ -1,6 +1,6 @@
 <?php
 
-class UsuarioDAO{
+class AdminDAO{
     private $conexao;
 
     public function __construct()
@@ -10,24 +10,18 @@ class UsuarioDAO{
         $this->conexao = $conexao;
     }
 
-    public function getUsuarioByUsername(string $username)
-    {
-        if($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['senha']) && isset($_POST['nomeUsuario']) && isset($_POST['email'])){
-            $nomeUsuario = $_POST['nomeUsuario'];
-            $email = $_POST['email'];
-            $senhaPura = $_POST['senha'];
-
-            $senhaHash = password_hash($senhaPura, PASSWORD_DEFAULT);
-
-            require_once 'src/DAO/UsuarioDAO.php';
-            $model = new UsuarioDAO();
-
-            $resultado = $model->inserirUsuario($nomeUsuario, $email, $senhaHash);
-
-            if ($resultado) {
-            header('Location: /app-jabulani/usuario/login');
-            exit;
-            }
+    public function getAdminByUsername(string $username)
+    {   
+        try{
+        $sql = "SELECT idUsuario, nomeUsuario, email FROM usuarios WHERE nomeUsuario = ?";
+        $stmt = $this->conexao->prepare($sql);
+        $stmt->bindParam(1, $username, PDO::PARAM_STR);
+        $stmt->execute();
+        $admin = $stmt->fetch(PDO::FETCH_ASSOC);
+        return $admin ?: null;
+        }catch (PDOException $e) {
+            echo "Erro ao buscar admin: " . $e->getMessage();
+            return false;
         }
     }
 }
