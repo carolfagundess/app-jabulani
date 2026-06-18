@@ -1,13 +1,23 @@
 <?php
+class AdminController{
 
-class UsuarioController
-{
-
-    public static function formLogin()
+    public static function cadastrarAdmin():void
     {
-        $acao = 'autenticacao';
+        if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['nomeUsuario'], $_POST['email'], $_POST['senha'])) {
+            $nomeUsuario = $_POST['nomeUsuario'] ?? '';
+            $email = $_POST['email'] ?? '';
+            $senha = $_POST['senha'] ?? '';
 
-        require_once 'src/views/admin/formLogin.php';
+            if (empty($nomeUsuario) || empty($email) || empty($senha)) {
+                echo "Todos os campos são obrigatórios.";
+                return;
+            }
+
+            // Aqui você pode adicionar a lógica para salvar o administrador no banco de dados
+            echo "Administrador cadastrado com sucesso!";
+        } else {
+            require_once 'src/views/admin/formCadastroAdmin.php';
+        }
     }
 
     public static function autenticar()
@@ -40,5 +50,5 @@ class UsuarioController
         }
     }
 
-    
+
 }
