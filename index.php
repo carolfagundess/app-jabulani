@@ -1,5 +1,5 @@
 <?php
-require_once 'src/controllers/AdminController.php';
+require_once 'src/controllers/UsuarioController.php';
 require_once 'src/controllers/BasicoController.php';
 require_once 'src/controllers/EventosController.php';
 

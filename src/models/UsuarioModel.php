@@ -1,14 +1,14 @@
 <?php 
 
-class UserModel
+class UsuarioModel
 {
 
-    public function getUserByUsername($username)
+    public function getUsuarioByUsername($username)
     {
 
-        require_once 'src/DAO/userDAO.php';
-        $dao = new UserDAO();
-        return $dao->getUserByUsername($username);
+        require_once 'src/DAO/usuarioDAO.php';
+        $dao = new UsuarioDAO();
+        return $dao->getUsuarioByUsername($username);
 
     }
 }

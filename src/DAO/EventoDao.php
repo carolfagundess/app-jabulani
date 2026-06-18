@@ -42,17 +42,5 @@ class EventoDao
         return false;
         }
     }
-
-    public function getEventoById(int $id):string{
-        try{
-            $sql = 'SELECT nome FROM marcas WHERE id_marca = ?';
-            $stmt = $this->conexao->prepare($sql);
-            $stmt->bindParam(1, $id, PDO::PARAM_INT);
-            $stmt->execute();
-            $result = $stmt->fetch(PDO::FETCH_ASSOC);
-            return $result ? $result['nome'] : '';
-        }
-    }
-    
-    
+        
 }
