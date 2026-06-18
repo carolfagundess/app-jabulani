@@ -43,14 +43,19 @@ class EventoDao
         }
     }
 
-    public function getEventoById(int $id):string{
-        try{
-            $sql = 'SELECT nome FROM marcas WHERE id_marca = ?';
+    public function getEventoById(int $id) {
+        try {
+            $sql = "SELECT id, titulo, descricao, `local`, dataEvento FROM eventos WHERE id = ?";
             $stmt = $this->conexao->prepare($sql);
+            
             $stmt->bindParam(1, $id, PDO::PARAM_INT);
             $stmt->execute();
-            $result = $stmt->fetch(PDO::FETCH_ASSOC);
-            return $result ? $result['nome'] : '';
+            
+            return $stmt->fetch(PDO::FETCH_ASSOC); 
+            
+        } catch (PDOException $e) {
+            echo "Erro ao buscar evento: " . $e->getMessage();
+            return false;
         }
     }
     
