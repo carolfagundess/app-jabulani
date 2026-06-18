@@ -1,10 +1,6 @@
 <?php
 
-<<<<<<< HEAD
 class UsuarioController
-=======
-class AdminController
->>>>>>> 40d1d1b146795198e080c14469ec2546fef4862d
 {
 
     public static function formLogin()
@@ -16,7 +12,6 @@ class AdminController
 
     public static function autenticar()
     {
-<<<<<<< HEAD
         if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['email']) && isset($_POST['senha'])) {
             $email = $_POST['email'];
             $senhaDigitada = $_POST['senha'];
@@ -46,9 +41,4 @@ class AdminController
     }
 
     
-=======
-        echo "Autenticando usuário...";
-    }
-
->>>>>>> 40d1d1b146795198e080c14469ec2546fef4862d
 }
