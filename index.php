@@ -1,7 +1,7 @@
 <?php
-require_once 'src/controllers/UsuarioController.php';
-require_once 'src/controllers/BasicoController.php';
-require_once 'src/controllers/EventosController.php';
+require_once 'src/controller/UsuarioController.php';
+require_once 'src/controller/BasicoController.php';
+require_once 'src/controller/EventoController.php';
 
 echo "<pre>";
 
@@ -9,17 +9,25 @@ echo "<pre>";
 $requisicao = $_SERVER['REQUEST_URI'];
 echo $requisicao;
 
-//Roteamento
+// Roteamento
 $aux = '/app-jabulani/';
 switch ($requisicao) {
 
-    //Rotas para Sistema de paginas 
-    case $aux.'/login':  
+    // Rotas de Usuário 
+    case $aux.'login':  
         UsuarioController::formLogin();
         break;
-    case $aux.'/autenticar':  
+    case $aux.'autenticar':  
         UsuarioController::autenticar();
         break;
+    case $aux.'cadastro':  
+        UsuarioController::formCadastro();
+        break;
+    case $aux.'salvarUsuario':  
+        UsuarioController::salvarUsuario();
+        break;
+
+    // Rotas de Sistema e Eventos
     case $aux.'principal':  
         BasicoController::principal();
         break;
