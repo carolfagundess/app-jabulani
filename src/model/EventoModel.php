@@ -14,16 +14,23 @@ class EventoModel{
         return $dao->inserirEvento($titulo, $descricao, $local, $dataEvento);
     }
 
-    public function alterarEvento(int $id, string $nome):bool{
+    public function alterarEvento(int $id, string $titulo, string $descricao, string $local, string $dataEvento):bool{
         require_once 'src/DAO/EventoDao.php';
         $dao = new EventoDao();
-        return $dao->alterarEvento($id, $nome);
+        return $dao->atualizarEvento($id, $titulo, $descricao, $local, $dataEvento);
     }
 
     public function deletarEvento(int $id):bool{
         require_once 'src/DAO/EventoDao.php';
         $dao = new EventoDao();
-        return $dao->deletarEvento($id);
+        return $dao->excluirEvento($id);
+    }
+
+    public function getEventoById(int $id)
+    {
+        require_once 'src/DAO/EventoDao.php';
+        $dao = new EventoDao();
+        return $dao->getEventoById($id);
     }
 
 }

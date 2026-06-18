@@ -14,11 +14,11 @@ $aux = '/app-jabulani/';
 switch ($requisicao) {
 
     //Rotas para Sistema de paginas 
-    case $aux.'admin/login':  
-        AdminController::formLogin();
+    case $aux.'/login':  
+        UsuarioController::formLogin();
         break;
-    case $aux.'admin/autenticar':  
-        AdminController::autenticar();
+    case $aux.'/autenticar':  
+        UsuarioController::autenticar();
         break;
     case $aux.'principal':  
         BasicoController::principal();
