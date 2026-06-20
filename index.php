@@ -40,6 +40,15 @@ switch ($requisicao) {
     case $aux.'inserirEvento':
         EventosController::inserirEvento();
         break;
+    case $aux.'alterarEvento':
+        EventosController::alterarEvento();
+        break;
+    case $aux.'atualizarEvento':
+        EventosController::salvarEvento();
+        break;
+    case $aux.'excluirEvento':
+        EventosController::excluirEvento();
+        break;
     default:
         echo "Página não encontrada!";
         break;

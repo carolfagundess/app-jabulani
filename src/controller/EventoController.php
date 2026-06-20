@@ -4,7 +4,7 @@ class EventosController
 {
     public static function listarEventos(): void
     {
-        require_once 'src/models/EventoModel.php';
+        require_once 'src/model/EventoModel.php';
 
         $model = new EventoModel();
         $listaEventos = $model->getEventos();
@@ -33,7 +33,7 @@ class EventosController
             $local = $_POST['local'];
             $dataEvento = $_POST['dataEvento'];
 
-            require 'src/models/EventoModel.php';
+            require 'src/model/EventoModel.php';
             $model = new EventoModel();
 
             // 3. Envia os 4 dados para o Model, na ordem certa
@@ -49,11 +49,11 @@ class EventosController
 
     public static function alterarEvento(): void
     {
-        if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['id']) && isset($_POST['titulo'])) {
+        if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['id'])) {
             $auxId = (int) trim($_POST['id']);
             $auxTitulo = trim($_POST['titulo']);
 
-            require_once 'src/DAO/EventoModel.php';
+            require_once 'src/model/EventoModel.php';
 
             $eventos = new EventoModel();
             $retorno = $eventos->getEventoById($auxId);

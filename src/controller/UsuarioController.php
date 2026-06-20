@@ -7,7 +7,7 @@ class UsuarioController
     {
         $acao = 'autenticacao';
 
-        require_once 'src/views/admin/formLogin.php';
+        require_once 'src/views/formLogin.php';
     }
 
     public static function autenticar()
@@ -53,16 +53,18 @@ class UsuarioController
             $_SERVER['REQUEST_METHOD'] == 'POST' &&
             isset($_POST['nomeUsuario']) &&
             isset($_POST['email']) &&
-            isset($_POST['senha'])
+            isset($_POST['senha'])&&
+            isset($_POST['telefone'])
         ) {
             $nomeUsuario = trim($_POST['nomeUsuario']);
             $email = trim($_POST['email']);
-            $senha = $_POST['senha']; // O Pablo modificará esta linha depois para aplicar a criptografia
+            $senha = $_POST['senha']; // Ajustar hash
+            $telefone = trim($_POST['telefone']);
 
             require_once 'src/model/UsuarioModel.php';
             $model = new UsuarioModel();
 
-            if ($model->inserirUsuario($nomeUsuario, $email, $senha)) {
+            if ($model->inserirUsuario($nomeUsuario, $email, $senha, $telefone)) {
                 // Redireciona para a tela de login após cadastrar com sucesso
                 header('Location: /app-jabulani/login');
                 exit;

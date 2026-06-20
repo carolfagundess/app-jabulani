@@ -16,6 +16,10 @@
 
             <label for="senha">Senha:</label>
             <input type="password" name="senha" required><br><br>
+            <label for="confirmarSenha">Confirmar Senha:</label>
+            <input type="password" name="confirmarSenha" required><br><br>
+            <label for="telefone">Telefone:</label>
+            <input type="tel" name="telefone" placeholder="(XX) XXXXX-XXXX" required><br><br>
 
             <input type="submit" value="Cadastrar">
         </form>
