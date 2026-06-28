@@ -13,6 +13,7 @@ session_start();
 require_once 'src/controller/UsuarioController.php';
 require_once 'src/controller/BasicoController.php';
 require_once 'src/controller/EventoController.php';
+require_once 'src/controller/AdminController.php';
 
 echo "<pre>";
 
@@ -30,6 +31,9 @@ switch ($requisicao) {
         break;
     case $aux.'autenticar':  
         UsuarioController::autenticar();
+        break;
+    case $aux.'logout':  
+        UsuarioController::logout();
         break;
     case $aux.'cadastro':  
         UsuarioController::formCadastro();
