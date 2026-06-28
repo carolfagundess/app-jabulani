@@ -49,7 +49,7 @@ class EventosController
 
     public static function alterarEvento(): void
     {
-        if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['id'])) {
+        if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['id'] )) {
             $auxId = (int) trim($_POST['id']);
             $auxTitulo = trim($_POST['titulo']);
 

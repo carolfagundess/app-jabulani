@@ -23,7 +23,6 @@ class UsuarioController
 
             if ($admin) {
                 if (password_verify($senhaDigitada, $admin['senha'])) {
-                    session_start();
                     $_SESSION['admin_id'] = $admin['idUsuario'];
 
                     header('Location: /app-jabulani/listarEventos');

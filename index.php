@@ -1,4 +1,15 @@
 <?php
+
+session_set_cookie_params([
+    'lifetime' => 0,
+    'path' => '/',
+    'domain' => '',
+    'secure' => true,
+    'httponly' => true,
+    'samesite' => 'Strict'
+]);
+session_start();
+
 require_once 'src/controller/UsuarioController.php';
 require_once 'src/controller/BasicoController.php';
 require_once 'src/controller/EventoController.php';
