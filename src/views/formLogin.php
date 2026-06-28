@@ -7,7 +7,7 @@
 </head>
 <body>
     <fieldset>
-        <form action="/mvc/<?=$acao?>" method="post">
+        <form action="/app-jabulani/<?=$acao?>" method="post">
             <label for="email">Email:</label>
             <input type="text" name="email" required><br><br>
             <label for="senha">Senha:</label>

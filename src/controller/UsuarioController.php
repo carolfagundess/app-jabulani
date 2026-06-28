@@ -5,7 +5,7 @@ class UsuarioController
 
     public static function formLogin()
     {
-        $acao = 'autenticacao';
+        $acao = 'autenticar';
 
         require_once 'src/views/formLogin.php';
     }
@@ -16,26 +16,25 @@ class UsuarioController
             $email = $_POST['email'];
             $senhaDigitada = $_POST['senha'];
 
-            require_once 'src/models/UsuarioModel.php';
+            require_once 'src/model/UsuarioModel.php';
             $model = new UsuarioModel();
 
-            // 1. Busca os dados do administrador no banco usando o e-mail ou nome de usuário
-            $admin = $model->getUsuarioByUsername($email); // Ajuste o método conforme seu Model
+            $admin = $model->getUsuarioByUsername($email); 
 
             if ($admin) {
-                // 2. Compara a senha digitada com o hash guardado na coluna 'senha' do banco
                 if (password_verify($senhaDigitada, $admin['senha'])) {
-                    // Senha correta! Inicia a sessão do usuário
                     session_start();
                     $_SESSION['admin_id'] = $admin['idUsuario'];
 
                     header('Location: /app-jabulani/listarEventos');
                     exit;
                 } else {
-                    echo "Senha incorreta!";
+                    echo "<br><br>Senha incorreta!
+                    <br><a href='/app-jabulani/login'>Voltar para o login</a>";
                 }
             } else {
-                echo "Usuário não encontrado!";
+                echo "<br><br>Usuário não encontrado!
+                <br><a href='/app-jabulani/login'>Voltar para o login</a>";
             }
         }
     }
@@ -46,26 +45,31 @@ class UsuarioController
         require_once 'src/views/admin/formCadastro.php';
     }
 
-    // ADICIONE ESTE MÉTODO: Recebe os dados via POST e envia para o Model
     public static function salvarUsuario()
     {
         if (
             $_SERVER['REQUEST_METHOD'] == 'POST' &&
             isset($_POST['nomeUsuario']) &&
             isset($_POST['email']) &&
-            isset($_POST['senha'])&&
-            isset($_POST['telefone'])
+            isset($_POST['senha']) &&
+            isset($_POST['confirmarSenha'])
         ) {
             $nomeUsuario = trim($_POST['nomeUsuario']);
             $email = trim($_POST['email']);
-            $senha = $_POST['senha']; // Ajustar hash
-            $telefone = trim($_POST['telefone']);
+            $senha = $_POST['senha']; 
+            $confirmarSenha = $_POST['confirmarSenha'];
+
+            if ($senha !== $confirmarSenha) {
+                echo "Erro: As senhas não coincidem.";
+                return;
+            }
+
+            $senhaHash = password_hash($senha, PASSWORD_DEFAULT);
 
             require_once 'src/model/UsuarioModel.php';
             $model = new UsuarioModel();
 
-            if ($model->inserirUsuario($nomeUsuario, $email, $senha, $telefone)) {
-                // Redireciona para a tela de login após cadastrar com sucesso
+            if ($model->inserirUsuario($nomeUsuario, $email, $senhaHash)) {
                 header('Location: /app-jabulani/login');
                 exit;
             } else {
