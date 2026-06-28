@@ -7,7 +7,7 @@
 </head>
 <body>
     <fieldset>
-        <form action="/app-jabulani/<?=$acao?>" method="post">
+        <form action="/app-jabulani/<?=htmlspecialchars($acao, ENT_QUOTES, 'UTF-8')?>" method="post">
             <label for="email">Email:</label>
             <input type="text" name="email" required><br><br>
             <label for="senha">Senha:</label>

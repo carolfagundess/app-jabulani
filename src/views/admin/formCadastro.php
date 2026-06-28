@@ -7,7 +7,7 @@
 <body>
     <fieldset>
         <legend>Criar nova conta</legend>
-        <form action="/app-jabulani/<?=$acao?>" method="post">
+        <form action="/app-jabulani/<?=htmlspecialchars($acao, ENT_QUOTES, 'UTF-8')?>" method="post">
             <label for="nomeUsuario">Nome de Usuário:</label>
             <input type="text" name="nomeUsuario" required><br><br>
 
