@@ -12,7 +12,7 @@ class UsuarioDAO{
 
     public function getUsuarios()
     {
-        $sql = "SELECT idUsuario, nomeUsuario, email FROM usuarios";
+        $sql = "SELECT idUsuario, nomeUsuario, email, tipoUsuario FROM usuarios";
         $stmt = $this->conexao->prepare($sql);
         $stmt->execute();
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
@@ -21,7 +21,7 @@ class UsuarioDAO{
     public function getUsuarioByUsername(string $username)
     {   
         try{
-        $sql = "SELECT idUsuario, nomeUsuario, email, senha FROM usuarios WHERE nomeUsuario = ? OR email = ?";
+        $sql = "SELECT idUsuario, nomeUsuario, email, senha, tipoUsuario FROM usuarios WHERE nomeUsuario = ? OR email = ?";
         $stmt = $this->conexao->prepare($sql);
         $stmt->bindParam(1, $username, PDO::PARAM_STR);
         $stmt->bindParam(2, $username, PDO::PARAM_STR);
@@ -34,14 +34,15 @@ class UsuarioDAO{
         }
     }
 
-    public function inserirUsuario(string $nomeUsuario, string $email, string $senha): bool
+    public function inserirUsuario(string $nomeUsuario, string $email, string $senha, string $tipoUsuario): bool
     {
         try {
-            $sql = 'INSERT INTO usuarios (nomeUsuario, email, senha) VALUES (?, ?, ?)';
+            $sql = 'INSERT INTO usuarios (nomeUsuario, email, senha, tipoUsuario) VALUES (?, ?, ?, ?)';
             $stmt = $this->conexao->prepare($sql);
             $stmt->bindParam(1, $nomeUsuario, PDO::PARAM_STR);
             $stmt->bindParam(2, $email, PDO::PARAM_STR);
             $stmt->bindParam(3, $senha, PDO::PARAM_STR);
+            $stmt->bindParam(4, $tipoUsuario, PDO::PARAM_STR);
             return $stmt->execute();
         } catch (PDOException $e) {
             echo "Erro ao inserir usuario: " . $e->getMessage();

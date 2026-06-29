@@ -12,7 +12,7 @@ class UsuarioModel
 
     }
 
-    public function inserirUsuario(string $nomeUsuario, string $email, string $senha): bool
+    public function inserirUsuario(string $nomeUsuario, string $email, string $senha, string $tipoUsuario = 'participante'): bool
     {
         require_once 'src/DAO/UsuarioDAO.php';
         $dao = new UsuarioDAO();

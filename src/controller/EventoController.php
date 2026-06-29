@@ -2,6 +2,13 @@
 
 class EventosController
 {
+    private static function verificarAdmin(): void
+    {
+        if (!isset($_SESSION['admin_id'])) {
+            header('Location: /app-jabulani/login');
+            exit;
+        }
+    }
     public static function listarEventos(): void
     {
         require_once 'src/model/EventoModel.php';
@@ -14,12 +21,14 @@ class EventosController
 
     public static function formInserirEvento(): void
     {
+        self::verificarAdmin();
         $acao = 'inserirEvento';
         require 'src/views/formInserirEvento.php';
     }
 
     public static function inserirEvento(): void
     {
+        self::verificarAdmin();
         if (
             $_SERVER['REQUEST_METHOD'] == 'POST' &&
             isset($_POST['titulo']) &&
@@ -27,7 +36,6 @@ class EventosController
             isset($_POST['local']) &&
             isset($_POST['dataEvento'])
         ) {
-            // 2. Captura os 4 dados
             $titulo = $_POST['titulo'];
             $descricao = $_POST['descricao'];
             $local = $_POST['local'];
@@ -36,11 +44,10 @@ class EventosController
             require 'src/model/EventoModel.php';
             $model = new EventoModel();
 
-            // 3. Envia os 4 dados para o Model, na ordem certa
             $retornoInserir = $model->inserirEvento($titulo, $descricao, $local, $dataEvento);
 
-            header('Location: /app-jabulani/listarEventos'); // chamada pra pagina de listar eventos
-            exit; // É recomendado colocar exit após um header de redirecionamento
+            header('Location: /app-jabulani/listarEventos'); 
+            exit; 
 
         } else {
             echo "Mensagem de erro: Faltam dados no formulário ou método incorreto.";
@@ -49,6 +56,7 @@ class EventosController
 
     public static function alterarEvento(): void
     {
+        self::verificarAdmin();
         if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['id'] )) {
             $auxId = (int) trim($_POST['id']);
             $auxTitulo = trim($_POST['titulo']);
@@ -73,6 +81,7 @@ class EventosController
 
     public static function salvarEvento(): void
     {
+        self::verificarAdmin();
         if (
             $_SERVER['REQUEST_METHOD'] === 'POST' &&
             isset($_POST['id']) &&
@@ -100,6 +109,7 @@ class EventosController
 
     public static function excluirEvento(): void
     {
+        self::verificarAdmin();
         if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['id'])) {
             $id = (int) trim($_POST['id']);
 

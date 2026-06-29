@@ -19,12 +19,16 @@ class UsuarioController
             require_once 'src/model/UsuarioModel.php';
             $model = new UsuarioModel();
 
-            $admin = $model->getUsuarioByUsername($email); 
+            $usuario = $model->getUsuarioByUsername($email);
+            if ($usuario) {
+                if (password_verify($senhaDigitada, $usuario['senha'])) {
 
-            if ($admin) {
-                if (password_verify($senhaDigitada, $admin['senha'])) {
-                    $_SESSION['admin_id'] = $admin['idUsuario'];
+                if( $usuario['tipoUsuario'] === 'admin') {
+                    $_SESSION['admin_id'] = $usuario['idUsuario'];
+                } else {
 
+                    $_SESSION['usuario_id'] = $usuario['idUsuario'];
+                }
                     header('Location: /app-jabulani/listarEventos');
                     exit;
                 } else {
@@ -81,11 +85,12 @@ class UsuarioController
             }
 
             $senhaHash = password_hash($senha, PASSWORD_DEFAULT);
+            $tipoUsuario = 'participante';
 
             require_once 'src/model/UsuarioModel.php';
             $model = new UsuarioModel();
 
-            if ($model->inserirUsuario($nomeUsuario, $email, $senhaHash)) {
+            if ($model->inserirUsuario($nomeUsuario, $email, $senhaHash, $tipoUsuario)) {
                 header('Location: /app-jabulani/login');
                 exit;
             } else {

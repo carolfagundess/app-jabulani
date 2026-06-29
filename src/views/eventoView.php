@@ -15,6 +15,8 @@
                 <td><?=htmlspecialchars($evento['descricao'], ENT_QUOTES, 'UTF-8')?></td>
                 <td><?=htmlspecialchars($evento['local'], ENT_QUOTES, 'UTF-8')?></td>
                 <td><?=htmlspecialchars($evento['dataEvento'], ENT_QUOTES, 'UTF-8')?></td>
+                <?php if (isset($_SESSION['admin_id'])): ?>
+                    
                 <td>
                     <form action="/app-jabulani/alterarEvento" method="post">
                         <input type="hidden" name="id" value="<?=htmlspecialchars($evento['id'], ENT_QUOTES, 'UTF-8')?>">
@@ -26,12 +28,15 @@
                     </form>
                 </td>
                 </tr>
+                <?php endif; ?>
             <?php
             }
         ?>
 
     </table>
-    <p>Inserir um novo evento?</p>
-    <a href = "/app-jabulani/formInserirEvento">Inserir Evento</a>
+    <?php if (isset($_SESSION['admin_id'])): ?>
+        <p>Inserir um novo evento?</p>
+        <a href="/app-jabulani/formInserirEvento">Inserir Evento</a>
+    <?php endif; ?>
 </body>
 </html>
