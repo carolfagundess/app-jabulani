@@ -16,6 +16,6 @@ class UsuarioModel
     {
         require_once 'src/DAO/UsuarioDAO.php';
         $dao = new UsuarioDAO();
-        return $dao->inserirUsuario($nomeUsuario, $email, $senha);
+        return $dao->inserirUsuario($nomeUsuario, $email, $senha, $tipoUsuario);
     }
 }
