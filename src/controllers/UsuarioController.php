@@ -7,7 +7,7 @@ class UsuarioController
     {
         $acao = 'autenticacao';
 
-        require_once 'src/views/admin/formLogin.php';
+        require_once 'src/views/formLogin.php';
     }
 
     public static function autenticar()
@@ -18,14 +18,17 @@ class UsuarioController
 
             require_once 'src/models/UsuarioModel.php';
             $model = new UsuarioModel();
-            
-            $admin = $model->getUsuarioByUsername($email); 
+
+            // 1. Busca os dados do administrador no banco usando o e-mail ou nome de usuário
+            $admin = $model->getUsuarioByUsername($email); // Ajuste o método conforme seu Model
 
             if ($admin) {
+                // 2. Compara a senha digitada com o hash guardado na coluna 'senha' do banco
                 if (password_verify($senhaDigitada, $admin['senha'])) {
+                    // Senha correta! Inicia a sessão do usuário
                     session_start();
                     $_SESSION['admin_id'] = $admin['idUsuario'];
-                    
+
                     header('Location: /app-jabulani/listarEventos');
                     exit;
                 } else {
@@ -37,67 +40,50 @@ class UsuarioController
         }
     }
 
-    public function getUsuarioById(int $id) {
-        $sql = "SELECT idUsuario, nomeUsuario, email, tipoUsuario FROM usuarios WHERE idUsuario = ?";
-        $stmt = $this->conexao->prepare($sql);
-        $stmt->bindParam(1, $id, PDO::PARAM_INT);
-        $stmt->execute();
-        return $stmt->fetch(PDO::FETCH_ASSOC);
+    public static function formCadastro()
+    {
+        $acao = 'salvarUsuario';
+        require_once 'src/views/admin/formCadastro.php';
     }
 
-    public function atualizarUsuario(int $id, string $nome, string $email): bool {
-        try {
-            $sql = "UPDATE usuarios SET nomeUsuario = ?, email = ? WHERE idUsuario = ?";
-            $stmt = $this->conexao->prepare($sql);
-            $stmt->bindParam(1, $nome, PDO::PARAM_STR);
-            $stmt->bindParam(2, $email, PDO::PARAM_STR);
-            $stmt->bindParam(3, $id, PDO::PARAM_INT);
-            return $stmt->execute();
-        } catch (PDOException $e) {
-            return false;
-        }
-    }
+    // ADICIONE ESTE MÉTODO: Recebe os dados via POST e envia para o Model
+    public static function salvarUsuario()
+    {
+        if (
+            $_SERVER['REQUEST_METHOD'] == 'POST' &&
+            isset($_POST['nomeUsuario']) &&
+            isset($_POST['email']) &&
+            isset($_POST['senha']) &&
+            isset($_POST['telefone'])
+        ) {
+            $nomeUsuario = trim($_POST['nomeUsuario']);
+            $email = trim($_POST['email']);
+            $senha = $_POST['senha']; // Ajustar hash
+            $telefone = trim($_POST['telefone']);
 
-    public static function formEditarPerfil() {
-        if (!isset($_SESSION['usuario_id']) && !isset($_SESSION['admin_id'])) {
-            header('Location: /app-jabulani/login');
-            exit;
-        }
-        
-        $id_requisicao = $_GET['id'] ?? $_SESSION['usuario_id'] ?? $_SESSION['admin_id'];
+            require_once 'src/model/UsuarioModel.php';
+            $model = new UsuarioModel();
 
-        if ($id_requisicao != ($_SESSION['usuario_id'] ?? null) && !isset($_SESSION['admin_id'])) {
-            http_response_code(403);
-            die("Acesso negado: Tentativa de alteração não autorizada (IDOR bloqueado).");
-        }
-
-        require_once 'src/DAO/UsuarioDAO.php';
-        $dao = new UsuarioDAO();
-        $usuario = $dao->getUsuarioById($id_requisicao);
-        
-        require 'src/views/formEditarPerfil.php';
-    }
-
-    public static function salvarPerfil() {
-        if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['idUsuario'])) {
-            $id_requisicao = (int) trim($_POST['idUsuario']);
-            
-            // 🛡️ PROTEÇÃO IDOR
-            if ($id_requisicao != ($_SESSION['usuario_id'] ?? null) && !isset($_SESSION['admin_id'])) {
-                http_response_code(403);
-                die("Acesso negado: Tentativa de alteração não autorizada (IDOR bloqueado).");
+            if ($model->inserirUsuario($nomeUsuario, $email, $senha, $telefone)) {
+                // Redireciona para a tela de login após cadastrar com sucesso
+                header('Location: /app-jabulani/login');
+                exit;
+            } else {
+                echo "Erro ao cadastrar o usuário no sistema.";
             }
-
-            require_once 'src/DAO/UsuarioDAO.php';
-            $dao = new UsuarioDAO();
-            $dao->atualizarUsuario($id_requisicao, trim($_POST['nomeUsuario']), trim($_POST['email']));
-            header('Location: /app-jabulani/principal');
-            exit;
+        } else {
+            echo "Dados incompletos no formulário de cadastro.";
         }
     }
 
+    public static function listarUsuariosAPI()
+    {
+        require_once 'src/DAO/UsuarioDAO.php'; // Ajuste o caminho se necessário
+        $usuarioDao = new UsuarioDAO();
+        $usuarios = $usuarioDao->getUsuarios();
 
-
-
-    
+        header('Content-Type: application/json; charset=utf-8');
+        echo json_encode($usuarios);
+        exit;
+    }
 }

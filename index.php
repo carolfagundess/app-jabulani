@@ -1,7 +1,7 @@
 <?php
 require_once 'src/controllers/UsuarioController.php';
 require_once 'src/controllers/BasicoController.php';
-require_once 'src/controllers/EventosController.php';
+require_once 'src/controllers/EventoController.php';
 
 echo "<pre>";
 
@@ -21,15 +21,31 @@ switch ($requisicao) {
         UsuarioController::autenticar();
         break;
     case $aux.'principal':  
+    // Rotas de Usuário 
+    case $aux . 'login':
+        UsuarioController::formLogin();
+        break;
+    case $aux . 'autenticar':
+        UsuarioController::autenticar();
+        break;
+    case $aux . 'cadastro':
+        UsuarioController::formCadastro();
+        break;
+    case $aux . 'salvarUsuario':
+        UsuarioController::salvarUsuario();
+        break;
+
+    // Rotas de Sistema e Eventos
+    case $aux . 'principal':
         BasicoController::principal();
         break;
-    case $aux.'listarEventos':  
+    case $aux . 'listarEventos':
         EventosController::listarEventos();
         break;
-    case $aux.'formInserirEvento':
+    case $aux . 'formInserirEvento':
         EventosController::formInserirEvento();
         break;
-    case $aux.'inserirEvento':
+    case $aux . 'inserirEvento':
         EventosController::inserirEvento();
         break;
     case $aux.'inscreverEvento':
@@ -45,6 +61,22 @@ switch ($requisicao) {
         UsuarioController::salvarPerfil();
         break;
 
+    case $aux . 'alterarEvento':
+        EventosController::alterarEvento();
+        break;
+    case $aux . 'atualizarEvento':
+        EventosController::salvarEvento();
+        break;
+    case $aux . 'excluirEvento':
+        EventosController::excluirEvento();
+        break;
+    case '/api/eventos/lista':
+        EventosController::listarEventosAPI();
+        break;
+
+    case '/api/usuarios/lista':
+        UsuarioController::listarUsuariosAPI();
+        break;
     default:
         echo "Página não encontrada!";
         break;
