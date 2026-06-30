@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Tempo de geração: 04/06/2026 às 03:12
+-- Tempo de geração: 30/06/2026 às 20:35
 -- Versão do servidor: 10.4.32-MariaDB
 -- Versão do PHP: 8.2.12
 
@@ -33,8 +33,16 @@ CREATE TABLE `eventos` (
   `descricao` text DEFAULT NULL,
   `local` varchar(255) DEFAULT NULL,
   `dataEvento` date DEFAULT NULL,
+  `banner` varchar(255) DEFAULT NULL,
   `registroCriado` timestamp NOT NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Despejando dados para a tabela `eventos`
+--
+
+INSERT INTO `eventos` (`id`, `titulo`, `descricao`, `local`, `dataEvento`, `banner`, `registroCriado`) VALUES
+(1, 'Jogo da Copa', 'Jogo do Brasil x Haiti', 'Bar do zé', '2026-06-17', NULL, '2026-06-18 00:05:13');
 
 -- --------------------------------------------------------
 
@@ -46,9 +54,23 @@ CREATE TABLE `usuarios` (
   `idUsuario` int(11) NOT NULL,
   `nomeUsuario` varchar(255) NOT NULL,
   `email` varchar(255) NOT NULL,
+  `telefone` varchar(20) NOT NULL,
+  `foto` varchar(255) DEFAULT NULL,
+  `tipo_usuario` enum('admin','participante') DEFAULT 'participante',
   `senha` varchar(255) NOT NULL,
   `registroCriado` timestamp NOT NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Despejando dados para a tabela `usuarios`
+--
+
+INSERT INTO `usuarios` (`idUsuario`, `nomeUsuario`, `email`, `telefone`, `foto`, `tipo_usuario`, `senha`, `registroCriado`) VALUES
+(1, 'teste', 'teste@', '', NULL, 'participante', 'teste#2025', '2026-06-18 00:23:32'),
+(2, 'carol_admin', 'carolina@admin', '', NULL, 'admin', 'carolina', '2026-06-18 22:56:16'),
+(3, 'admin_admin', 'admin@admin', '', NULL, 'participante', '123456', '2026-06-18 22:58:55'),
+(4, 'carolina fagundes', 'carolina@gmail', '51999458243', NULL, 'participante', 'carolina', '2026-06-20 03:09:30'),
+(6, 'pablo theves', 'pablo@gmail', '51999458243', NULL, 'participante', '123456', '2026-06-20 03:12:15');
 
 -- --------------------------------------------------------
 
@@ -97,13 +119,13 @@ ALTER TABLE `usuarioseventos`
 -- AUTO_INCREMENT de tabela `eventos`
 --
 ALTER TABLE `eventos`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT de tabela `usuarios`
 --
 ALTER TABLE `usuarios`
-  MODIFY `idUsuario` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `idUsuario` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
 -- AUTO_INCREMENT de tabela `usuarioseventos`
