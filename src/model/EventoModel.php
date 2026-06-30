@@ -8,11 +8,12 @@ class EventoModel
         $dao = new EventoDao();
         return $dao->getEventos();
     }
-    public function inserirEvento(string $titulo, string $descricao, string $local, string $dataEvento): bool
+    
+    public function inserirEvento(string $titulo, string $descricao, string $local, string $dataEvento, ?string $banner = null): bool
     {
         require_once 'src/DAO/EventoDao.php';
         $dao = new EventoDao();
-        return $dao->inserirEvento($titulo, $descricao, $local, $dataEvento);
+        return $dao->inserirEvento($titulo, $descricao, $local, $dataEvento, $banner);
     }
 
     public function alterarEvento(int $id, string $titulo, string $descricao, string $local, string $dataEvento): bool

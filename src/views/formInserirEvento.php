@@ -27,7 +27,7 @@
             <input type="date" name="dataEvento" value="<?=isset($dataEvento)?$dataEvento:''?>">
             <br>
             <label>Imagem:</label>
-            <input type="file" name="imagem" accept="image/*"><br><br>
+            <input type="file" name="banner" accept="image/*"><br><br>
             <input type="hidden" name="id" value="<?=isset($auxId)?$auxId:''?>">  
             <input type="submit" value="Registrar">  
 
