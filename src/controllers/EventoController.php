@@ -1,4 +1,4 @@
-git <?php
+<?php
 
 class EventosController
 {

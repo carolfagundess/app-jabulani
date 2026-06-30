@@ -7,7 +7,7 @@ class UsuarioController
     {
         $acao = 'autenticacao';
 
-        require_once 'src/views/formLogin.php';
+        require_once 'src/views/admin/formLogin.php';
     }
 
     public static function autenticar()

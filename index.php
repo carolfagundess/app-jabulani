@@ -1,27 +1,17 @@
 <?php
+session_start(); 
+
 require_once 'src/controllers/UsuarioController.php';
 require_once 'src/controllers/BasicoController.php';
 require_once 'src/controllers/EventoController.php';
 
 echo "<pre>";
 
-//Pegar a rota da URL
-$requisicao = $_SERVER['REQUEST_URI'];
+$requisicao = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH); 
 echo $requisicao;
 
-//Roteamento
 $aux = '/app-jabulani/';
 switch ($requisicao) {
-
-    //Rotas para Sistema de paginas 
-    case $aux.'/login':  
-        UsuarioController::formLogin();
-        break;
-    case $aux.'/autenticar':  
-        UsuarioController::autenticar();
-        break;
-    case $aux.'principal':  
-    // Rotas de Usuário 
     case $aux . 'login':
         UsuarioController::formLogin();
         break;
@@ -34,8 +24,6 @@ switch ($requisicao) {
     case $aux . 'salvarUsuario':
         UsuarioController::salvarUsuario();
         break;
-
-    // Rotas de Sistema e Eventos
     case $aux . 'principal':
         BasicoController::principal();
         break;
@@ -48,19 +36,18 @@ switch ($requisicao) {
     case $aux . 'inserirEvento':
         EventosController::inserirEvento();
         break;
-    case $aux.'inscreverEvento':
+    case $aux . 'inscreverEvento':
         EventosController::inscreverEvento();
         break;
-    case $aux.'meusEventos':
+    case $aux . 'meusEventos':
         EventosController::meusEventos();
         break;
-    case $aux.'editarPerfil':
+    case $aux . 'editarPerfil':
         UsuarioController::formEditarPerfil();
         break;
-    case $aux.'salvarPerfil':
+    case $aux . 'salvarPerfil':
         UsuarioController::salvarPerfil();
         break;
-
     case $aux . 'alterarEvento':
         EventosController::alterarEvento();
         break;
@@ -73,7 +60,6 @@ switch ($requisicao) {
     case '/api/eventos/lista':
         EventosController::listarEventosAPI();
         break;
-
     case '/api/usuarios/lista':
         UsuarioController::listarUsuariosAPI();
         break;
@@ -81,7 +67,5 @@ switch ($requisicao) {
         echo "Página não encontrada!";
         break;
 }
-
 echo "</pre>";
-
 ?>
