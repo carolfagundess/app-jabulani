@@ -32,6 +32,19 @@ switch ($requisicao) {
     case $aux.'inserirEvento':
         EventosController::inserirEvento();
         break;
+    case $aux.'inscreverEvento':
+        EventosController::inscreverEvento();
+        break;
+    case $aux.'meusEventos':
+        EventosController::meusEventos();
+        break;
+    case $aux.'editarPerfil':
+        UsuarioController::formEditarPerfil();
+        break;
+    case $aux.'salvarPerfil':
+        UsuarioController::salvarPerfil();
+        break;
+
     default:
         echo "Página não encontrada!";
         break;

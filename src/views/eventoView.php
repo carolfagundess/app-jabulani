@@ -30,6 +30,15 @@
             }
         ?>
 
+        <?php if (isset($_SESSION['usuario_id'])): ?>
+                <td>
+                    <form action="/app-jabulani/inscreverEvento" method="post">
+                        <input type="hidden" name="id_evento" value="<?=htmlspecialchars($evento['id'], ENT_QUOTES, 'UTF-8')?>">
+                        <input type="submit" value="Inscrever-se">
+                    </form>
+                </td>
+        <?php endif; ?>
+
     </table>
     <p>Inserir um novo evento?</p>
     <a href = "/app-jabulani/formInserirEvento">Inserir Evento</a>

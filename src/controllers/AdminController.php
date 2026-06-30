@@ -13,7 +13,6 @@ class AdminController{
                 return;
             }
 
-            // Aqui você pode adicionar a lógica para salvar o administrador no banco de dados
             echo "Administrador cadastrado com sucesso!";
         } else {
             require_once 'src/views/admin/formCadastroAdmin.php';
@@ -29,13 +28,10 @@ class AdminController{
             require_once 'src/models/UsuarioModel.php';
             $model = new UsuarioModel();
             
-            // 1. Busca os dados do administrador no banco usando o e-mail ou nome de usuário
-            $admin = $model->getUsuarioByUsername($email); // Ajuste o método conforme seu Model
+            $admin = $model->getUsuarioByUsername($email); 
 
             if ($admin) {
-                // 2. Compara a senha digitada com o hash guardado na coluna 'senha' do banco
                 if (password_verify($senhaDigitada, $admin['senha'])) {
-                    // Senha correta! Inicia a sessão do usuário
                     session_start();
                     $_SESSION['admin_id'] = $admin['idUsuario'];
                     

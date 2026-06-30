@@ -27,7 +27,6 @@ class EventosController
             isset($_POST['local']) &&
             isset($_POST['dataEvento'])
         ) {
-            // 2. Captura os 4 dados
             $titulo = $_POST['titulo'];
             $descricao = $_POST['descricao'];
             $local = $_POST['local'];
@@ -36,11 +35,10 @@ class EventosController
             require 'src/models/EventoModel.php';
             $model = new EventoModel();
 
-            // 3. Envia os 4 dados para o Model, na ordem certa
             $retornoInserir = $model->inserirEvento($titulo, $descricao, $local, $dataEvento);
 
-            header('Location: /app-jabulani/listarEventos'); // chamada pra pagina de listar eventos
-            exit; // É recomendado colocar exit após um header de redirecionamento
+            header('Location: /app-jabulani/listarEventos'); 
+            exit;
 
         } else {
             echo "Mensagem de erro: Faltam dados no formulário ou método incorreto.";
@@ -113,4 +111,32 @@ class EventosController
             echo "Mensagem de erro: Faltam dados no formulário ou método incorreto.";
         }
     }
+
+    public static function inscreverEvento(): void {
+        if (!isset($_SESSION['usuario_id'])) {
+            header('Location: /app-jabulani/login');
+            exit;
+        }
+        if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['id_evento'])) {
+            require_once 'src/DAO/UsuarioEventoDAO.php';
+            $dao = new UsuarioEventoDAO();
+            $dao->inscrever($_SESSION['usuario_id'], (int)$_POST['id_evento']);
+            
+            header('Location: /app-jabulani/meusEventos');
+            exit;
+        }
+    }
+
+    public static function meusEventos(): void {
+        if (!isset($_SESSION['usuario_id'])) {
+            header('Location: /app-jabulani/login');
+            exit;
+        }
+        require_once 'src/DAO/UsuarioEventoDAO.php';
+        $dao = new UsuarioEventoDAO();
+        $listaEventos = $dao->getEventosByUsuario($_SESSION['usuario_id']);
+        
+        require 'src/views/meusEventosView.php';
+    }
+
 }
