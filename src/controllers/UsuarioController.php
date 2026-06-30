@@ -86,4 +86,27 @@ class UsuarioController
         echo json_encode($usuarios);
         exit;
     }
+
+    public static function excluirUsuario()
+    {
+        // Proteção: Apenas admin pode excluir
+        if (!isset($_SESSION['admin_id'])) {
+            die("Acesso negado.");
+        }
+
+        if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['idUsuario'])) {
+            $id = (int) trim($_POST['idUsuario']);
+
+            require_once 'src/model/UsuarioModel.php';
+            $model = new UsuarioModel();
+
+            if ($model->deletarUsuario($id)) {
+                // Redireciona de volta para a lista de usuários (ou página principal)
+                header('Location: /app-jabulani/principal');
+                exit;
+            } else {
+                echo "Erro ao excluir participante.";
+            }
+        }
+    }
 }

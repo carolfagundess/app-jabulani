@@ -7,7 +7,7 @@
 <body>
     <fieldset>
         <legend>Formulário de cadastro de Eventos</legend>
-        <form action="<?=$acao?>" method="post">
+        <form action="<?=$acao?>" method="post" enctype="multipart/form-data">
             <label>Título:</label>
             <input type="text" name="titulo" value="<?=isset($titulo)?$titulo:''?>">
             <br>
@@ -26,6 +26,8 @@
             <label>Data:</label>
             <input type="date" name="dataEvento" value="<?=isset($dataEvento)?$dataEvento:''?>">
             <br>
+            <label>Imagem:</label>
+            <input type="file" name="imagem" accept="image/*"><br><br>
             <input type="hidden" name="id" value="<?=isset($auxId)?$auxId:''?>">  
             <input type="submit" value="Registrar">  
 

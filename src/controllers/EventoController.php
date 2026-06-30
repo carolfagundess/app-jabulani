@@ -20,28 +20,33 @@ class EventosController
 
     public static function inserirEvento(): void
     {
-        if (
-            $_SERVER['REQUEST_METHOD'] == 'POST' &&
-            isset($_POST['titulo']) &&
-            isset($_POST['descricao']) &&
-            isset($_POST['local']) &&
-            isset($_POST['dataEvento'])
-        ) {
+        if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['titulo'])) {
             $titulo = $_POST['titulo'];
             $descricao = $_POST['descricao'];
             $local = $_POST['local'];
             $dataEvento = $_POST['dataEvento'];
 
-            require 'src/models/EventoModel.php';
+            // Lógica de Upload do Banner
+            $caminhoBanner = null;
+            if (isset($_FILES['banner']) && $_FILES['banner']['error'] === UPLOAD_ERR_OK) {
+                // Pega a extensão da imagem (ex: jpg, png)
+                $extensao = pathinfo($_FILES['banner']['name'], PATHINFO_EXTENSION);
+                // Gera um nome único para não substituir imagens com o mesmo nome
+                $nomeArquivo = uniqid() . '.' . $extensao;
+                $caminhoBanner = 'uploads/' . $nomeArquivo;
+
+                // Move o arquivo temporário para a pasta uploads
+                move_uploaded_file($_FILES['banner']['tmp_name'], $caminhoBanner);
+            }
+
+            require 'src/model/EventoModel.php';
             $model = new EventoModel();
 
-            $retornoInserir = $model->inserirEvento($titulo, $descricao, $local, $dataEvento);
+            // NOTA: Terá de atualizar o seu Model e DAO para aceitar esta 5ª variável ($caminhoBanner)
+            $model->inserirEvento($titulo, $descricao, $local, $dataEvento, $caminhoBanner);
 
-            header('Location: /app-jabulani/listarEventos'); 
+            header('Location: /app-jabulani/listarEventos');
             exit;
-
-        } else {
-            echo "Mensagem de erro: Faltam dados no formulário ou método incorreto.";
         }
     }
 
@@ -112,7 +117,8 @@ class EventosController
         }
     }
 
-    public static function inscreverEvento(): void {
+    public static function inscreverEvento(): void
+    {
         if (!isset($_SESSION['usuario_id'])) {
             header('Location: /app-jabulani/login');
             exit;
@@ -120,14 +126,15 @@ class EventosController
         if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['id_evento'])) {
             require_once 'src/DAO/UsuarioEventoDAO.php';
             $dao = new UsuarioEventoDAO();
-            $dao->inscrever($_SESSION['usuario_id'], (int)$_POST['id_evento']);
-            
+            $dao->inscrever($_SESSION['usuario_id'], (int) $_POST['id_evento']);
+
             header('Location: /app-jabulani/meusEventos');
             exit;
         }
     }
 
-    public static function meusEventos(): void {
+    public static function meusEventos(): void
+    {
         if (!isset($_SESSION['usuario_id'])) {
             header('Location: /app-jabulani/login');
             exit;
@@ -135,7 +142,7 @@ class EventosController
         require_once 'src/DAO/UsuarioEventoDAO.php';
         $dao = new UsuarioEventoDAO();
         $listaEventos = $dao->getEventosByUsuario($_SESSION['usuario_id']);
-        
+
         require 'src/views/meusEventosView.php';
     }
 

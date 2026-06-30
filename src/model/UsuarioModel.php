@@ -18,4 +18,11 @@ class UsuarioModel
         $dao = new UsuarioDAO();
         return $dao->inserirUsuario($nomeUsuario, $email, $senha, $telefone);
     }
+
+    public function deletarUsuario(int $id): bool
+    {
+        require_once 'src/DAO/UsuarioDAO.php';
+        $dao = new UsuarioDAO();
+        return $dao->excluirUsuario($id);
+    }
 }

@@ -63,6 +63,9 @@ switch ($requisicao) {
     case '/api/usuarios/lista':
         UsuarioController::listarUsuariosAPI();
         break;
+    case $aux . 'excluirUsuario':
+        UsuarioController::excluirUsuario();
+        break;
     default:
         echo "Página não encontrada!";
         break;
