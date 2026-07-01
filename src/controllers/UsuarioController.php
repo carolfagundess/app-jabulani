@@ -16,7 +16,7 @@ class UsuarioController
             $email = $_POST['email'];
             $senhaDigitada = $_POST['senha'];
 
-            require_once 'src/models/UsuarioModel.php';
+            require_once 'src/model/UsuarioModel.php';
             $model = new UsuarioModel();
 
             // 1. Busca os dados do administrador no banco usando o e-mail ou nome de usuário

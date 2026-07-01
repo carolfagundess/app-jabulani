@@ -4,7 +4,7 @@ class EventosController
 {
     public static function listarEventos(): void
     {
-        require_once 'src/models/EventoModel.php';
+        require_once 'src/model/EventoModel.php';
 
         $model = new EventoModel();
         $listaEventos = $model->getEventos();
