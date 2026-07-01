@@ -26,9 +26,17 @@
                 <?php if (!empty($participantes)): ?>
                     <ul class="list-group mt-3">
                         <?php foreach ($participantes as $participante): ?>
-                            <li class="list-group-item">
-                                <?= htmlspecialchars($participante['nomeUsuario'], ENT_QUOTES, 'UTF-8') ?>
-                                <span class="text-muted">- <?= htmlspecialchars($participante['email'], ENT_QUOTES, 'UTF-8') ?></span>
+                            <li class="list-group-item d-flex justify-content-between align-items-center">
+                                <div>
+                                    <?= htmlspecialchars($participante['nomeUsuario'], ENT_QUOTES, 'UTF-8') ?>
+                                    <span class="text-muted">- <?= htmlspecialchars($participante['email'], ENT_QUOTES, 'UTF-8') ?></span>
+                                </div>
+                                <?php if (isset($_SESSION['admin_id'])): ?>
+                                    <form action="/app-jabulani/excluirUsuario" method="post" class="m-0">
+                                        <input type="hidden" name="idUsuario" value="<?= htmlspecialchars($participante['idUsuario'], ENT_QUOTES, 'UTF-8') ?>">
+                                        <button type="submit" class="btn btn-sm btn-danger">Excluir</button>
+                                    </form>
+                                <?php endif; ?>
                             </li>
                         <?php endforeach; ?>
                     </ul>

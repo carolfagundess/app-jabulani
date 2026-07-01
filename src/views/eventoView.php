@@ -21,6 +21,15 @@
             <?php endif; ?>
         </div>
 
+        <div class="row mb-4">
+            <div class="col-md-8">
+                <form action="/app-jabulani/buscar" method="get" class="d-flex gap-2">
+                    <input type="text" name="q" class="form-control" placeholder="Buscar eventos" value="<?= isset($_GET['q']) ? htmlspecialchars($_GET['q'], ENT_QUOTES, 'UTF-8') : '' ?>">
+                    <button class="btn btn-primary" type="submit">Buscar</button>
+                </form>
+            </div>
+        </div>
+
         <?php if (!empty($_SESSION['mensagem_sucesso'])): ?>
             <div class="alert alert-success"><?= htmlspecialchars($_SESSION['mensagem_sucesso'], ENT_QUOTES, 'UTF-8') ?></div>
             <?php unset($_SESSION['mensagem_sucesso']); ?>

@@ -38,11 +38,6 @@
                                 <input type="date" name="dataEvento" class="form-control" value="<?= isset($dataEvento) ? htmlspecialchars($dataEvento, ENT_QUOTES, 'UTF-8') : '' ?>">
                             </div>
 
-                            <div class="mb-3">
-                                <label class="form-label">Imagem</label>
-                                <input type="file" name="banner" class="form-control" accept="image/*">
-                            </div>
-
                             <button type="submit" class="btn btn-primary">Registrar</button>
                             <a href="/app-jabulani/listarEventos" class="btn btn-secondary ms-2">Cancelar</a>
                         </form>

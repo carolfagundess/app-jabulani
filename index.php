@@ -19,6 +19,10 @@ $requisicao = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH) ?: '/';
 $aux = '/app-jabulani';
 
 switch ($requisicao) {
+    case $aux:
+    case $aux.'/':
+        header('Location: /app-jabulani/login');
+        exit;
     case $aux.'/login':
         UsuarioController::formLogin();
         break;
@@ -89,7 +93,7 @@ switch ($requisicao) {
         EventosController::exportarEventoPdf();
         break;
     default:
-        header('Location: /app-jabulani/listarEventos');
+        header('Location: /app-jabulani/login');
         exit;
 }
 ?>

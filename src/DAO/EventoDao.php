@@ -28,17 +28,15 @@ class EventoDao
     }
 
 
-    public function inserirEvento(string $titulo, string $descricao, string $local, string $dataEvento, ?string $banner = null): bool
+    public function inserirEvento(string $titulo, string $descricao, string $local, string $dataEvento): bool
     {
         try {
-            // Agora incluindo o banner no SQL!
-            $sql = 'INSERT INTO eventos (titulo, descricao, `local`, dataEvento, banner) VALUES (?, ?, ?, ?, ?)';
+            $sql = 'INSERT INTO eventos (titulo, descricao, `local`, dataEvento) VALUES (?, ?, ?, ?)';
             $stmt = $this->conexao->prepare($sql);
             $stmt->bindParam(1, $titulo, PDO::PARAM_STR);
             $stmt->bindParam(2, $descricao, PDO::PARAM_STR);
             $stmt->bindParam(3, $local, PDO::PARAM_STR);
             $stmt->bindParam(4, $dataEvento, PDO::PARAM_STR);
-            $stmt->bindParam(5, $banner, PDO::PARAM_STR);
             return $stmt->execute();
         } catch (PDOException $e) {
             echo "Erro ao inserir evento: " . $e->getMessage();
