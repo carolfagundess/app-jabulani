@@ -47,5 +47,4 @@ class EventoModel
         echo json_encode($eventos);
         exit;
     }
-
 }

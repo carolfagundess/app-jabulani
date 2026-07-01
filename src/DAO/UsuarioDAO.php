@@ -13,7 +13,7 @@ class UsuarioDAO
 
     public function getUsuarios()
     {
-        $sql = "SELECT idUsuario, nomeUsuario, email FROM usuarios";
+        $sql = "SELECT idUsuario, nomeUsuario, email, tipoUsuario FROM usuarios";
         $stmt = $this->conexao->prepare($sql);
         $stmt->execute();
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
@@ -49,7 +49,6 @@ class UsuarioDAO
             return false;
         }
     }
-
     public function excluirUsuario(int $id): bool
     {
         try {

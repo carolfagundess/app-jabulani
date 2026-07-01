@@ -44,7 +44,6 @@
             </tr>
         <?php endforeach; ?>
     </table>
-
     <?php if (isset($_SESSION['admin_id'])): ?>
         <p>Inserir um novo evento?</p>
         <a href="/app-jabulani/formInserirEvento">Inserir Evento</a>

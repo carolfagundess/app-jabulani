@@ -2,6 +2,13 @@
 
 class EventosController
 {
+    private static function verificarAdmin(): void
+    {
+        if (!isset($_SESSION['admin_id'])) {
+            header('Location: /app-jabulani/login');
+            exit;
+        }
+    }
     public static function listarEventos(): void
     {
         require_once 'src/model/EventoModel.php';
@@ -14,6 +21,7 @@ class EventosController
 
     public static function formInserirEvento(): void
     {
+        self::verificarAdmin();
         $acao = 'inserirEvento';
         require 'src/views/formInserirEvento.php';
     }
@@ -52,11 +60,12 @@ class EventosController
 
     public static function alterarEvento(): void
     {
-        if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['id']) && isset($_POST['titulo'])) {
+        self::verificarAdmin();
+        if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['id'] )) {
             $auxId = (int) trim($_POST['id']);
             $auxTitulo = trim($_POST['titulo']);
 
-            require_once 'src/DAO/EventoModel.php';
+            require_once 'src/model/EventoModel.php';
 
             $eventos = new EventoModel();
             $retorno = $eventos->getEventoById($auxId);
@@ -76,6 +85,7 @@ class EventosController
 
     public static function salvarEvento(): void
     {
+        self::verificarAdmin();
         if (
             $_SERVER['REQUEST_METHOD'] === 'POST' &&
             isset($_POST['id']) &&
@@ -103,6 +113,7 @@ class EventosController
 
     public static function excluirEvento(): void
     {
+        self::verificarAdmin();
         if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['id'])) {
             $id = (int) trim($_POST['id']);
 
@@ -117,6 +128,7 @@ class EventosController
         }
     }
 
+<<<<<<< HEAD:src/controllers/EventoController.php
     public static function inscreverEvento(): void
     {
         if (!isset($_SESSION['usuario_id'])) {
@@ -133,6 +145,8 @@ class EventosController
         }
     }
 
+=======
+>>>>>>> ccac9c18fec9b9ce00c6db49189a2420f096f412:src/controller/EventoController.php
     public static function meusEventos(): void
     {
         if (!isset($_SESSION['usuario_id'])) {
@@ -156,4 +170,26 @@ class EventosController
         echo json_encode($eventos);
         exit;
     }
+<<<<<<< HEAD:src/controllers/EventoController.php
+=======
+    public static function inscrever(): void
+    {
+        if (!isset($_SESSION['usuario_id'])) {
+            header('Location: /app-jabulani/login');
+            exit;
+        }
+        
+        if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['idEvento'])) {
+            $idEvento = (int) trim($_POST['idEvento']);
+            $idUsuario = $_SESSION['usuario_id'];
+
+            require_once 'src/DAO/UsuarioEventoDAO.php';
+            $dao = new UsuarioEventoDAO();
+            $dao->inscrever($idUsuario, $idEvento);
+
+            header('Location: /app-jabulani/meusEventos');
+            exit;
+        }
+    }
+>>>>>>> ccac9c18fec9b9ce00c6db49189a2420f096f412:src/controller/EventoController.php
 }
