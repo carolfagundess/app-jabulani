@@ -128,25 +128,6 @@ class EventosController
         }
     }
 
-<<<<<<< HEAD:src/controllers/EventoController.php
-    public static function inscreverEvento(): void
-    {
-        if (!isset($_SESSION['usuario_id'])) {
-            header('Location: /app-jabulani/login');
-            exit;
-        }
-        if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['id_evento'])) {
-            require_once 'src/DAO/UsuarioEventoDAO.php';
-            $dao = new UsuarioEventoDAO();
-            $dao->inscrever($_SESSION['usuario_id'], (int) $_POST['id_evento']);
-
-            header('Location: /app-jabulani/meusEventos');
-            exit;
-        }
-    }
-
-=======
->>>>>>> ccac9c18fec9b9ce00c6db49189a2420f096f412:src/controller/EventoController.php
     public static function meusEventos(): void
     {
         if (!isset($_SESSION['usuario_id'])) {
@@ -170,26 +151,4 @@ class EventosController
         echo json_encode($eventos);
         exit;
     }
-<<<<<<< HEAD:src/controllers/EventoController.php
-=======
-    public static function inscrever(): void
-    {
-        if (!isset($_SESSION['usuario_id'])) {
-            header('Location: /app-jabulani/login');
-            exit;
-        }
-        
-        if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['idEvento'])) {
-            $idEvento = (int) trim($_POST['idEvento']);
-            $idUsuario = $_SESSION['usuario_id'];
-
-            require_once 'src/DAO/UsuarioEventoDAO.php';
-            $dao = new UsuarioEventoDAO();
-            $dao->inscrever($idUsuario, $idEvento);
-
-            header('Location: /app-jabulani/meusEventos');
-            exit;
-        }
-    }
->>>>>>> ccac9c18fec9b9ce00c6db49189a2420f096f412:src/controller/EventoController.php
 }
