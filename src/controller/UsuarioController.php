@@ -22,11 +22,11 @@ class UsuarioController
             $usuario = $model->getUsuarioByUsername($email);
             if ($usuario) {
                 if (password_verify($senhaDigitada, $usuario['senha'])) {
+                    unset($_SESSION['admin_id'], $_SESSION['usuario_id']);
 
                     if ($usuario['tipoUsuario'] === 'admin') {
                         $_SESSION['admin_id'] = $usuario['idUsuario'];
                     } else {
-
                         $_SESSION['usuario_id'] = $usuario['idUsuario'];
                     }
                     header('Location: /app-jabulani/listarEventos');
@@ -106,6 +106,54 @@ class UsuarioController
         }
     }
 
+    public static function formEditarPerfil(): void
+    {
+        if (!isset($_SESSION['usuario_id']) && !isset($_SESSION['admin_id'])) {
+            header('Location: /app-jabulani/login');
+            exit;
+        }
+
+        $idUsuario = isset($_SESSION['usuario_id']) ? $_SESSION['usuario_id'] : $_SESSION['admin_id'];
+        require_once 'src/model/UsuarioModel.php';
+        $model = new UsuarioModel();
+        $usuario = $model->getUsuarioById($idUsuario);
+
+        require_once 'src/views/formEditarPerfil.php';
+    }
+
+    public static function salvarPerfil(): void
+    {
+        if (!isset($_SESSION['usuario_id']) && !isset($_SESSION['admin_id'])) {
+            header('Location: /app-jabulani/login');
+            exit;
+        }
+
+        if (
+            $_SERVER['REQUEST_METHOD'] === 'POST' &&
+            isset($_POST['nomeUsuario']) &&
+            isset($_POST['email'])
+        ) {
+            $idUsuario = isset($_SESSION['usuario_id']) ? $_SESSION['usuario_id'] : $_SESSION['admin_id'];
+            $nomeUsuario = trim($_POST['nomeUsuario']);
+            $email = trim($_POST['email']);
+            $telefone = isset($_POST['telefone']) ? trim($_POST['telefone']) : '';
+
+            require_once 'src/model/UsuarioModel.php';
+            $model = new UsuarioModel();
+
+            if ($model->atualizarUsuario($idUsuario, $nomeUsuario, $email, $telefone)) {
+                $_SESSION['mensagem_sucesso'] = 'Perfil atualizado com sucesso.';
+                header('Location: /app-jabulani/perfil');
+                exit;
+            }
+
+            echo 'Não foi possível salvar as alterações do perfil.';
+            return;
+        }
+
+        echo 'Dados incompletos para atualizar o perfil.';
+    }
+
     public static function listarUsuariosAPI()
     {
         require_once 'src/DAO/UsuarioDAO.php';
@@ -116,9 +164,9 @@ class UsuarioController
         echo json_encode($usuarios, JSON_UNESCAPED_UNICODE);
         exit;
     }
+
     public static function excluirUsuario()
     {
-        // Proteção: Apenas admin pode excluir
         if (!isset($_SESSION['admin_id'])) {
             die("Acesso negado.");
         }
@@ -130,7 +178,6 @@ class UsuarioController
             $model = new UsuarioModel();
 
             if ($model->deletarUsuario($id)) {
-                // Redireciona de volta para a lista de usuários (ou página principal)
                 header('Location: /app-jabulani/principal');
                 exit;
             } else {

@@ -2,28 +2,45 @@
 <html lang="pt-br">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Cadastro de Usuário</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
 </head>
-<body>
-    <fieldset>
-        <legend>Criar nova conta</legend>
-        <form action="/app-jabulani/<?=htmlspecialchars($acao, ENT_QUOTES, 'UTF-8')?>" method="post">
-            <label for="nomeUsuario">Nome de Usuário:</label>
-            <input type="text" name="nomeUsuario" required><br><br>
-
-            <label for="email">E-mail:</label>
-            <input type="email" name="email" required><br><br>
-
-            <label for="senha">Senha:</label>
-            <input type="password" name="senha" required><br><br>
-            <label for="confirmarSenha">Confirmar Senha:</label>
-            <input type="password" name="confirmarSenha" required><br><br>
-            <label for="telefone">Telefone:</label>
-            <input type="tel" name="telefone" placeholder="(XX) XXXXX-XXXX" required><br><br>
-
-            <input type="submit" value="Cadastrar">
-        </form>
-    </fieldset>
-    <a href="/app-jabulani/login">Já tenho conta (Login)</a>
+<body class="bg-light">
+    <div class="container py-5">
+        <div class="row justify-content-center">
+            <div class="col-md-6">
+                <div class="card shadow-sm">
+                    <div class="card-body">
+                        <h1 class="h4 mb-4">Criar nova conta</h1>
+                        <form action="/app-jabulani/<?=htmlspecialchars($acao, ENT_QUOTES, 'UTF-8')?>" method="post">
+                            <div class="mb-3">
+                                <label for="nomeUsuario" class="form-label">Nome de Usuário</label>
+                                <input type="text" id="nomeUsuario" name="nomeUsuario" class="form-control" required>
+                            </div>
+                            <div class="mb-3">
+                                <label for="email" class="form-label">E-mail</label>
+                                <input type="email" id="email" name="email" class="form-control" required>
+                            </div>
+                            <div class="mb-3">
+                                <label for="senha" class="form-label">Senha</label>
+                                <input type="password" id="senha" name="senha" class="form-control" required>
+                            </div>
+                            <div class="mb-3">
+                                <label for="confirmarSenha" class="form-label">Confirmar Senha</label>
+                                <input type="password" id="confirmarSenha" name="confirmarSenha" class="form-control" required>
+                            </div>
+                            <div class="mb-3">
+                                <label for="telefone" class="form-label">Telefone</label>
+                                <input type="tel" id="telefone" name="telefone" class="form-control" placeholder="(XX) XXXXX-XXXX" required>
+                            </div>
+                            <button type="submit" class="btn btn-primary">Cadastrar</button>
+                            <a href="/app-jabulani/login" class="btn btn-link">Já tenho conta (Login)</a>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 </body>
 </html>

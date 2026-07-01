@@ -1,37 +1,55 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
-    <title>Formulário Eventos</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Formulário de Eventos</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
 </head>
-<body>
-    <fieldset>
-        <legend>Formulário de cadastro de Eventos</legend>
-        <form action="<?=$acao?>" method="post" enctype="multipart/form-data">
-            <label>Título:</label>
-            <input type="text" name="titulo" value="<?=isset($titulo)?htmlspecialchars($titulo, ENT_QUOTES, 'UTF-8'):''?>">
-            <br>
+<body class="bg-light">
+    <div class="container py-5">
+        <div class="row justify-content-center">
+            <div class="col-lg-8 col-md-10">
+                <div class="card shadow-sm">
+                    <div class="card-body">
+                        <h1 class="h4 mb-4">Formulário de cadastro de Eventos</h1>
+                        <form action="<?= htmlspecialchars($acao, ENT_QUOTES, 'UTF-8') ?>" method="post" enctype="multipart/form-data">
+                            <div class="mb-3">
+                                <label class="form-label">Título</label>
+                                <input type="text" name="titulo" class="form-control" value="<?= isset($titulo) ? htmlspecialchars($titulo, ENT_QUOTES, 'UTF-8') : '' ?>">
+                            </div>
 
-            <?php if(isset($auxId)){ ?>
-                <input type="hidden" name="id" value="<?=htmlspecialchars($auxId, ENT_QUOTES, 'UTF-8')?>">
-            <?php } 
-            ?>
+                            <?php if (isset($auxId)): ?>
+                                <input type="hidden" name="id" value="<?= htmlspecialchars($auxId, ENT_QUOTES, 'UTF-8') ?>">
+                            <?php endif; ?>
 
-            <label>Descrição:</label>
-            <input type="text" name="descricao" value="<?=isset($descricao)?htmlspecialchars($descricao, ENT_QUOTES, 'UTF-8'):''?>">
-            <br>
-            <label>Local:</label>
-            <input type="text" name="local" value="<?=isset($local)?htmlspecialchars($local, ENT_QUOTES, 'UTF-8'):''?>">
-            <br>
-            <label>Data:</label>
-            <input type="date" name="dataEvento" value="<?=isset($dataEvento)?htmlspecialchars($dataEvento, ENT_QUOTES, 'UTF-8'):''?>">
-            <br>
-            <label>Imagem:</label>
-            <input type="file" name="banner" accept="image/*"><br><br>
-            <input type="hidden" name="id" value="<?=isset($auxId)?$auxId:''?>">  
-            <input type="submit" value="Registrar">  
+                            <div class="mb-3">
+                                <label class="form-label">Descrição</label>
+                                <input type="text" name="descricao" class="form-control" value="<?= isset($descricao) ? htmlspecialchars($descricao, ENT_QUOTES, 'UTF-8') : '' ?>">
+                            </div>
 
-        </form>
-    </fieldset>
+                            <div class="mb-3">
+                                <label class="form-label">Local</label>
+                                <input type="text" name="local" class="form-control" value="<?= isset($local) ? htmlspecialchars($local, ENT_QUOTES, 'UTF-8') : '' ?>">
+                            </div>
+
+                            <div class="mb-3">
+                                <label class="form-label">Data</label>
+                                <input type="date" name="dataEvento" class="form-control" value="<?= isset($dataEvento) ? htmlspecialchars($dataEvento, ENT_QUOTES, 'UTF-8') : '' ?>">
+                            </div>
+
+                            <div class="mb-3">
+                                <label class="form-label">Imagem</label>
+                                <input type="file" name="banner" class="form-control" accept="image/*">
+                            </div>
+
+                            <button type="submit" class="btn btn-primary">Registrar</button>
+                            <a href="/app-jabulani/listarEventos" class="btn btn-secondary ms-2">Cancelar</a>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 </body>
 </html>

@@ -9,6 +9,7 @@ class EventosController
             exit;
         }
     }
+
     public static function listarEventos(): void
     {
         require_once 'src/model/EventoModel.php';
@@ -44,11 +45,10 @@ class EventosController
             require 'src/model/EventoModel.php';
             $model = new EventoModel();
 
-            $retornoInserir = $model->inserirEvento($titulo, $descricao, $local, $dataEvento);
+            $model->inserirEvento($titulo, $descricao, $local, $dataEvento);
 
             header('Location: /app-jabulani/listarEventos');
             exit;
-
         } else {
             echo "Mensagem de erro: Faltam dados no formulário ou método incorreto.";
         }
@@ -59,7 +59,6 @@ class EventosController
         self::verificarAdmin();
         if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['id'])) {
             $auxId = (int) trim($_POST['id']);
-            $auxTitulo = trim($_POST['titulo']);
 
             require_once 'src/model/EventoModel.php';
 
@@ -98,7 +97,7 @@ class EventosController
 
             require_once 'src/model/EventoModel.php';
             $eventos = new EventoModel();
-            $retornoAtualizar = $eventos->alterarEvento($id, $titulo, $descricao, $local, $dataEvento);
+            $eventos->alterarEvento($id, $titulo, $descricao, $local, $dataEvento);
 
             header('Location: /app-jabulani/listarEventos');
             exit;
@@ -115,7 +114,7 @@ class EventosController
 
             require_once 'src/model/EventoModel.php';
             $eventos = new EventoModel();
-            $retornoExcluir = $eventos->deletarEvento($id);
+            $eventos->deletarEvento($id);
 
             header('Location: /app-jabulani/listarEventos');
             exit;
@@ -147,6 +146,7 @@ class EventosController
         echo json_encode($eventos, JSON_UNESCAPED_UNICODE);
         exit;
     }
+
     public static function inscrever(): void
     {
         if (!isset($_SESSION['usuario_id'])) {
@@ -175,5 +175,164 @@ class EventosController
         $listaEventos = $dao->buscarEventos($termo);
 
         require 'src/views/eventoView.php';
+    }
+
+    public static function detalhesEvento(): void
+    {
+        self::verificarAdmin();
+
+        $idEvento = isset($_GET['id']) ? (int) trim($_GET['id']) : 0;
+        if ($idEvento <= 0) {
+            header('Location: /app-jabulani/listarEventos');
+            exit;
+        }
+
+        require_once 'src/model/EventoModel.php';
+        $model = new EventoModel();
+        $evento = $model->getEventoById($idEvento);
+
+        if (!$evento) {
+            echo 'Evento não encontrado.';
+            return;
+        }
+
+        $participantes = $model->getParticipantesByEvento($idEvento);
+        require 'src/views/detalhesEventoView.php';
+    }
+
+    public static function exportarEventoXml(): void
+    {
+        self::verificarAdmin();
+
+        $idEvento = isset($_GET['id']) ? (int) trim($_GET['id']) : 0;
+        if ($idEvento <= 0) {
+            header('Location: /app-jabulani/listarEventos');
+            exit;
+        }
+
+        require_once 'src/model/EventoModel.php';
+        $model = new EventoModel();
+        $evento = $model->getEventoById($idEvento);
+        $participantes = $model->getParticipantesByEvento($idEvento);
+
+        if (!$evento) {
+            echo 'Evento não encontrado.';
+            return;
+        }
+
+        $xml = new SimpleXMLElement('<evento/>');
+        $xml->addChild('id', $evento['id']);
+        $xml->addChild('titulo', $evento['titulo']);
+        $xml->addChild('descricao', $evento['descricao']);
+        $xml->addChild('local', $evento['local']);
+        $xml->addChild('dataEvento', $evento['dataEvento']);
+
+        $participantesNode = $xml->addChild('participantes');
+        foreach ($participantes as $participante) {
+            $participanteNode = $participantesNode->addChild('participante');
+            $participanteNode->addChild('nome', $participante['nomeUsuario']);
+            $participanteNode->addChild('email', $participante['email']);
+        }
+
+        header('Content-Type: application/xml; charset=utf-8');
+        header('Content-Disposition: attachment; filename="evento-' . $idEvento . '.xml"');
+        echo $xml->asXML();
+        exit;
+    }
+
+    public static function exportarEventoPdf(): void
+    {
+        self::verificarAdmin();
+
+        $idEvento = isset($_GET['id']) ? (int) trim($_GET['id']) : 0;
+        if ($idEvento <= 0) {
+            header('Location: /app-jabulani/listarEventos');
+            exit;
+        }
+
+        require_once 'src/model/EventoModel.php';
+        $model = new EventoModel();
+        $evento = $model->getEventoById($idEvento);
+        $participantes = $model->getParticipantesByEvento($idEvento);
+
+        if (!$evento) {
+            echo 'Evento não encontrado.';
+            return;
+        }
+
+        $linhas = [
+            'Relatório do Evento',
+            '',
+            'Título: ' . $evento['titulo'],
+            'Descrição: ' . $evento['descricao'],
+            'Local: ' . $evento['local'],
+            'Data: ' . $evento['dataEvento'],
+            '',
+            'Participantes (' . count($participantes) . '):'
+        ];
+
+        foreach ($participantes as $participante) {
+            $linhas[] = '- ' . $participante['nomeUsuario'] . ' <' . $participante['email'] . '>';
+        }
+
+        $pdf = self::gerarPdfSimples($linhas);
+
+        if (ob_get_length()) {
+            ob_clean();
+        }
+
+        header('Content-Type: application/pdf');
+        header('Content-Disposition: attachment; filename="evento-' . $idEvento . '.pdf"');
+        header('Content-Length: ' . strlen($pdf));
+        echo $pdf;
+        exit;
+    }
+
+    private static function gerarPdfSimples(array $linhas): string
+    {
+        $content = '';
+        $y = 760;
+
+        foreach ($linhas as $linha) {
+            $texto = self::textoPdfLiteral($linha);
+            $content .= "BT /F1 12 Tf 50 $y Td ($texto) Tj ET\n";
+            $y -= 14;
+        }
+
+        $objects = [];
+        $objects[] = "<< /Type /Catalog /Pages 2 0 R >>";
+        $objects[] = "<< /Type /Pages /Kids [3 0 R] /Count 1 >>";
+        $objects[] = "<< /Type /Page /Parent 2 0 R /MediaBox [0 0 612 792] /Contents 4 0 R /Resources << /Font << /F1 5 0 R >> >> >>";
+        $length = strlen($content);
+        $objects[] = "<< /Length $length >>\nstream\n$content\nendstream";
+        $objects[] = "<< /Type /Font /Subtype /Type1 /BaseFont /Helvetica /Encoding /WinAnsiEncoding >>";
+
+        $pdf = "%PDF-1.4\n";
+        $offsets = [];
+        $offsets[0] = 0;
+
+        foreach ($objects as $index => $object) {
+            $offsets[$index + 1] = strlen($pdf);
+            $pdf .= ($index + 1) . " 0 obj\n" . $object . "\nendobj\n";
+        }
+
+        $startXref = strlen($pdf);
+        $pdf .= "xref\n0 " . (count($objects) + 1) . "\n";
+        $pdf .= "0000000000 65535 f \n";
+        foreach ($objects as $index => $_) {
+            $pdf .= str_pad($offsets[$index + 1], 10, '0', STR_PAD_LEFT) . " 00000 n \n";
+        }
+
+        $pdf .= "trailer\n<< /Size " . (count($objects) + 1) . " /Root 1 0 R >>\n";
+        $pdf .= "startxref\n$startXref\n%%EOF";
+
+        return $pdf;
+    }
+
+    private static function textoPdfLiteral(string $texto): string
+    {
+        $winAnsi = mb_convert_encoding($texto, 'ISO-8859-1', 'UTF-8');
+        $escaped = str_replace(['\\', '(', ')'], ['\\\\', '\\(', '\\)'], $winAnsi);
+        return $escaped;
     }
 }

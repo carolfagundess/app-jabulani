@@ -10,7 +10,6 @@ class UsuarioEventoDAO {
 
     public function inscrever(int $idUsuario, int $idEvento): bool {
         try {
-            // Evita dupla inscrição no mesmo evento
             $verifica = "SELECT id FROM usuarioseventos WHERE idUsuario = ? AND idEvento = ?";
             $stmtVerifica = $this->conexao->prepare($verifica);
             $stmtVerifica->bindParam(1, $idUsuario, PDO::PARAM_INT);
@@ -22,10 +21,9 @@ class UsuarioEventoDAO {
             $stmt = $this->conexao->prepare($sql);
             $stmt->bindParam(1, $idUsuario, PDO::PARAM_INT);
             $stmt->bindParam(2, $idEvento, PDO::PARAM_INT);
-            
+
             $_SESSION['mensagem_sucesso'] = "Você foi adicionado com sucesso!";
             return $stmt->execute();
-
 
         } catch (PDOException $e) {
             echo "Erro ao inscrever: " . $e->getMessage();
@@ -39,6 +37,18 @@ class UsuarioEventoDAO {
                 WHERE ue.idUsuario = ?";
         $stmt = $this->conexao->prepare($sql);
         $stmt->bindParam(1, $idUsuario, PDO::PARAM_INT);
+        $stmt->execute();
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+    public function getParticipantesByEvento(int $idEvento): array {
+        $sql = "SELECT u.idUsuario, u.nomeUsuario, u.email
+                FROM usuarios u
+                INNER JOIN usuarioseventos ue ON ue.idUsuario = u.idUsuario
+                WHERE ue.idEvento = ?
+                ORDER BY u.nomeUsuario";
+        $stmt = $this->conexao->prepare($sql);
+        $stmt->bindParam(1, $idEvento, PDO::PARAM_INT);
         $stmt->execute();
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
