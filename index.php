@@ -1,70 +1,68 @@
 <?php
-session_start(); 
+
+session_set_cookie_params([
+    'lifetime' => 0,
+    'path' => '/',
+    'domain' => '',
+    'secure' => true,
+    'httponly' => true,
+    'samesite' => 'Strict'
+]);
+session_start();
 
 require_once 'src/controller/UsuarioController.php';
 require_once 'src/controller/BasicoController.php';
 require_once 'src/controller/EventoController.php';
+require_once 'src/controller/AdminController.php';
 
 echo "<pre>";
 
-$requisicao = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH); 
+//Pegar a rota da URL
+$requisicao = $_SERVER['REQUEST_URI'];
 echo $requisicao;
 
+// Roteamento
 $aux = '/app-jabulani/';
 switch ($requisicao) {
-    case $aux . 'login':
+
+    // Rotas de Usuário 
+    case $aux.'login':  
         UsuarioController::formLogin();
         break;
-    case $aux . 'autenticar':
+    case $aux.'autenticar':  
         UsuarioController::autenticar();
         break;
-    case $aux . 'cadastro':
+    case $aux.'logout':  
+        UsuarioController::logout();
+        break;
+    case $aux.'cadastro':  
         UsuarioController::formCadastro();
         break;
-    case $aux . 'salvarUsuario':
+    case $aux.'salvarUsuario':  
         UsuarioController::salvarUsuario();
         break;
-    case $aux . 'principal':
+
+    // Rotas de Sistema e Eventos
+    case $aux.'principal':  
         BasicoController::principal();
         break;
-    case $aux . 'listarEventos':
-        EventoController::listarEventos();
+    case $aux.'listarEventos':  
+        EventosController::listarEventos();
         break;
-    case $aux . 'formInserirEvento':
-        EventoController::formInserirEvento();
+    case $aux.'formInserirEvento':
+        EventosController::formInserirEvento();
         break;
-    case $aux . 'inserirEvento':
-        EventoController::inserirEvento();
+    case $aux.'inserirEvento':
+        EventosController::inserirEvento();
         break;
-    case $aux . 'inscreverEvento':
-        EventoController::inscreverEvento();
+    case $aux.'alterarEvento':
+        EventosController::alterarEvento();
         break;
-    case $aux . 'meusEventos':
-        EventoController::meusEventos();
+    case $aux.'atualizarEvento':
+        EventosController::salvarEvento();
         break;
-    case $aux . 'editarPerfil':
-        UsuarioController::formEditarPerfil();
-        break;
-    case $aux . 'salvarPerfil':
-        UsuarioController::salvarPerfil();
-        break;
-    case $aux . 'alterarEvento':
-        EventoController::alterarEvento();
-        break;
-    case $aux . 'atualizarEvento':
-        EventoController::salvarEvento();
-        break;
-    case $aux . 'excluirEvento':
-        EventoController::excluirEvento();
-        break;
-    case '/api/eventos/lista':
-        EventoController::listarEventosAPI();
-        break;
-    case '/api/usuarios/lista':
-        UsuarioController::listarUsuariosAPI();
-        break;
-    case $aux . 'excluirUsuario':
-        UsuarioController::excluirUsuario();
+    case $aux.'excluirEvento':
+        EventosController::excluirEvento();
         break;
         case $aux.'meusEventos':
         EventosController::meusEventos();
@@ -72,15 +70,23 @@ switch ($requisicao) {
     case $aux.'excluirUsuario':
         UsuarioController::excluirUsuario();
         break;
-    case $aux.'api/eventos':
+    case $aux.'api/eventos/lista':
         EventosController::listarEventosAPI();
         break;
-    case $aux.'api/usuarios':
+    case $aux.'api/usuarios/lista':
         UsuarioController::listarUsuariosAPI();
+        break;
+    case $aux.'inscrever':
+        EventosController::inscrever();
+        break;
+    case $aux.'buscar':
+        EventosController::buscar();
         break;
     default:
         echo "Página não encontrada!";
         break;
 }
+
 echo "</pre>";
+
 ?>
