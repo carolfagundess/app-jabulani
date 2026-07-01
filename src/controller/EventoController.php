@@ -123,4 +123,28 @@ class EventosController
             echo "Mensagem de erro: Faltam dados no formulário ou método incorreto.";
         }
     }
+
+    public static function meusEventos(): void
+    {
+        if (!isset($_SESSION['usuario_id'])) {
+            header('Location: /app-jabulani/login');
+            exit;
+        }
+        require_once 'src/DAO/UsuarioEventoDAO.php';
+        $dao = new UsuarioEventoDAO();
+        $listaEventos = $dao->getEventosByUsuario($_SESSION['usuario_id']);
+
+        require 'src/views/meusEventosView.php';
+    }
+
+    public static function listarEventosAPI()
+    {
+        require_once 'src/DAO/EventoDao.php'; // Ajuste o caminho se necessário
+        $eventoDao = new EventoDao();
+        $eventos = $eventoDao->getEventos();
+
+        header('Content-Type: application/json; charset=utf-8');
+        echo json_encode($eventos);
+        exit;
+    }
 }
