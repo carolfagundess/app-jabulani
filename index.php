@@ -86,6 +86,9 @@ switch ($requisicao) {
     case $aux.'/detalhesEvento':
         EventosController::detalhesEvento();
         break;
+    case $aux.'/removerParticipante':
+        EventosController::removerParticipante();
+        break;
     case $aux.'/exportarEventoXml':
         EventosController::exportarEventoXml();
         break;

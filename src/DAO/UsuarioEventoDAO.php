@@ -52,4 +52,18 @@ class UsuarioEventoDAO {
         $stmt->execute();
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
+
+    public function removerParticipante(int $idUsuario, int $idEvento): bool
+    {
+        try {
+            $sql = 'DELETE FROM usuarioseventos WHERE idUsuario = ? AND idEvento = ?';
+            $stmt = $this->conexao->prepare($sql);
+            $stmt->bindParam(1, $idUsuario, PDO::PARAM_INT);
+            $stmt->bindParam(2, $idEvento, PDO::PARAM_INT);
+            return $stmt->execute();
+        } catch (PDOException $e) {
+            echo "Erro ao remover participante: " . $e->getMessage();
+            return false;
+        }
+    }
 }

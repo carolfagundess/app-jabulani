@@ -200,6 +200,29 @@ class EventosController
         require 'src/views/detalhesEventoView.php';
     }
 
+    public static function removerParticipante(): void
+    {
+        self::verificarAdmin();
+
+        if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['idUsuario']) && isset($_POST['idEvento'])) {
+            $idUsuario = (int) trim($_POST['idUsuario']);
+            $idEvento = (int) trim($_POST['idEvento']);
+
+            require_once 'src/model/EventoModel.php';
+            $model = new EventoModel();
+
+            if ($model->removerParticipante($idUsuario, $idEvento)) {
+                header('Location: /app-jabulani/detalhesEvento?id=' . $idEvento);
+                exit;
+            }
+
+            echo 'Erro ao remover participante do evento.';
+            return;
+        }
+
+        echo 'Dados incompletos para remover participante.';
+    }
+
     public static function exportarEventoXml(): void
     {
         self::verificarAdmin();

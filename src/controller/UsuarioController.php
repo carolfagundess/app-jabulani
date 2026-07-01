@@ -91,11 +91,12 @@ class UsuarioController
 
             $senhaHash = password_hash($senha, PASSWORD_DEFAULT);
             $tipoUsuario = 'participante';
+            $telefone = isset($_POST['telefone']) ? trim($_POST['telefone']) : '';
 
             require_once 'src/model/UsuarioModel.php';
             $model = new UsuarioModel();
 
-            if ($model->inserirUsuario($nomeUsuario, $email, $senhaHash, $tipoUsuario)) {
+            if ($model->inserirUsuario($nomeUsuario, $email, $senhaHash, $tipoUsuario, $telefone)) {
                 header('Location: /app-jabulani/login');
                 exit;
             } else {
@@ -173,12 +174,13 @@ class UsuarioController
 
         if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['idUsuario'])) {
             $id = (int) trim($_POST['idUsuario']);
+            $redirectTo = isset($_POST['redirectTo']) ? trim($_POST['redirectTo']) : '/app-jabulani/principal';
 
             require_once 'src/model/UsuarioModel.php';
             $model = new UsuarioModel();
 
             if ($model->deletarUsuario($id)) {
-                header('Location: /app-jabulani/principal');
+                header('Location: ' . $redirectTo);
                 exit;
             } else {
                 echo "Erro ao excluir participante.";

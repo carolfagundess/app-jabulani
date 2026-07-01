@@ -17,11 +17,11 @@ class UsuarioModel
         return $dao->getUsuarioById($id);
     }
 
-    public function inserirUsuario(string $nomeUsuario, string $email, string $senha, string $tipoUsuario): bool
+    public function inserirUsuario(string $nomeUsuario, string $email, string $senha, string $tipoUsuario, string $telefone = ''): bool
     {
         require_once 'src/DAO/UsuarioDAO.php';
         $dao = new UsuarioDAO();
-        return $dao->inserirUsuario($nomeUsuario, $email, $senha, $tipoUsuario);
+        return $dao->inserirUsuario($nomeUsuario, $email, $senha, $tipoUsuario, $telefone);
     }
 
     public function atualizarUsuario(int $id, string $nomeUsuario, string $email, string $telefone = ''): bool

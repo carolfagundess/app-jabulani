@@ -26,6 +26,10 @@
                             </div>
                             <button type="submit" class="btn btn-primary">Entrar</button>
                         </form>
+                        <div class="mt-3 text-center">
+                            <span>É novo por aqui? </span>
+                            <a href="/app-jabulani/cadastro">Crie sua conta</a>
+                        </div>
                     </div>
                 </div>
             </div>

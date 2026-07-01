@@ -73,16 +73,18 @@ class UsuarioDAO
         }
     }
 
-    public function inserirUsuario(string $nomeUsuario, string $email, string $senha, string $tipoUsuario): bool
+    public function inserirUsuario(string $nomeUsuario, string $email, string $senha, string $tipoUsuario, string $telefone = ''): bool
     {
         try {
             $this->ensureTipoUsuarioColumn();
-            $sql = 'INSERT INTO usuarios (nomeUsuario, email, senha, tipoUsuario) VALUES (?, ?, ?, ?)';
+            $this->ensureTelefoneColumn();
+            $sql = 'INSERT INTO usuarios (nomeUsuario, email, senha, tipoUsuario, telefone) VALUES (?, ?, ?, ?, ?)';
             $stmt = $this->conexao->prepare($sql);
             $stmt->bindParam(1, $nomeUsuario, PDO::PARAM_STR);
             $stmt->bindParam(2, $email, PDO::PARAM_STR);
             $stmt->bindParam(3, $senha, PDO::PARAM_STR);
             $stmt->bindParam(4, $tipoUsuario, PDO::PARAM_STR);
+            $stmt->bindParam(5, $telefone, PDO::PARAM_STR);
             return $stmt->execute();
         } catch (PDOException $e) {
             echo "Erro ao inserir usuario: " . $e->getMessage();

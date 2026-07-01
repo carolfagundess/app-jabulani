@@ -44,6 +44,13 @@ class EventoModel
         return $dao->getParticipantesByEvento($idEvento);
     }
 
+    public function removerParticipante(int $idUsuario, int $idEvento): bool
+    {
+        require_once 'src/DAO/UsuarioEventoDAO.php';
+        $dao = new UsuarioEventoDAO();
+        return $dao->removerParticipante($idUsuario, $idEvento);
+    }
+
     public static function listarEventosAPI()
     {
         require_once 'src/DAO/EventoDao.php';

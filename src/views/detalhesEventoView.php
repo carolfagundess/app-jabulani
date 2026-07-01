@@ -32,10 +32,18 @@
                                     <span class="text-muted">- <?= htmlspecialchars($participante['email'], ENT_QUOTES, 'UTF-8') ?></span>
                                 </div>
                                 <?php if (isset($_SESSION['admin_id'])): ?>
-                                    <form action="/app-jabulani/excluirUsuario" method="post" class="m-0">
-                                        <input type="hidden" name="idUsuario" value="<?= htmlspecialchars($participante['idUsuario'], ENT_QUOTES, 'UTF-8') ?>">
-                                        <button type="submit" class="btn btn-sm btn-danger">Excluir</button>
-                                    </form>
+                                    <div class="d-flex gap-2">
+                                        <form action="/app-jabulani/removerParticipante" method="post" class="m-0">
+                                            <input type="hidden" name="idUsuario" value="<?= htmlspecialchars($participante['idUsuario'], ENT_QUOTES, 'UTF-8') ?>">
+                                            <input type="hidden" name="idEvento" value="<?= htmlspecialchars($evento['id'], ENT_QUOTES, 'UTF-8') ?>">
+                                            <button type="submit" class="btn btn-sm btn-warning">Remover do Evento</button>
+                                        </form>
+                                        <form action="/app-jabulani/excluirUsuario" method="post" class="m-0">
+                                            <input type="hidden" name="idUsuario" value="<?= htmlspecialchars($participante['idUsuario'], ENT_QUOTES, 'UTF-8') ?>">
+                                            <input type="hidden" name="redirectTo" value="/app-jabulani/detalhesEvento?id=<?= htmlspecialchars($evento['id'], ENT_QUOTES, 'UTF-8') ?>">
+                                            <button type="submit" class="btn btn-sm btn-danger">Excluir do Sistema</button>
+                                        </form>
+                                    </div>
                                 <?php endif; ?>
                             </li>
                         <?php endforeach; ?>
