@@ -33,4 +33,14 @@ class EventoModel{
         return $dao->getEventoById($id);
     }
 
+    public static function listarEventosAPI()
+    {
+        require_once 'src/DAO/EventoDao.php'; // Ajuste o caminho se necessário
+        $eventoDao = new EventoDao();
+        $eventos = $eventoDao->getEventos();
+
+        header('Content-Type: application/json; charset=utf-8');
+        echo json_encode($eventos);
+        exit;
+    }
 }
