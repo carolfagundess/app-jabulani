@@ -13,7 +13,6 @@ session_start();
 require_once 'src/controller/UsuarioController.php';
 require_once 'src/controller/BasicoController.php';
 require_once 'src/controller/EventoController.php';
-require_once 'src/controller/AdminController.php';
 
 $requisicao = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH) ?: '/';
 $aux = '/app-jabulani';
@@ -48,52 +47,52 @@ switch ($requisicao) {
         BasicoController::principal();
         break;
     case $aux.'/listarEventos':
-        EventosController::listarEventos();
+        EventoController::listarEventos();
         break;
     case $aux.'/formInserirEvento':
-        EventosController::formInserirEvento();
+        EventoController::formInserirEvento();
         break;
     case $aux.'/inserirEvento':
-        EventosController::inserirEvento();
+        EventoController::inserirEvento();
         break;
     case $aux.'/alterarEvento':
-        EventosController::alterarEvento();
+        EventoController::alterarEvento();
         break;
     case $aux.'/atualizarEvento':
-        EventosController::salvarEvento();
+        EventoController::salvarEvento();
         break;
     case $aux.'/excluirEvento':
-        EventosController::excluirEvento();
+        EventoController::excluirEvento();
         break;
     case $aux.'/meusEventos':
-        EventosController::meusEventos();
+        EventoController::meusEventos();
         break;
     case $aux.'/excluirUsuario':
         UsuarioController::excluirUsuario();
         break;
     case $aux.'/api/eventos/lista':
-        EventosController::listarEventosAPI();
+        EventoController::listarEventosAPI();
         break;
     case $aux.'/api/usuarios/lista':
         UsuarioController::listarUsuariosAPI();
         break;
     case $aux.'/inscrever':
-        EventosController::inscrever();
+        EventoController::inscrever();
         break;
     case $aux.'/buscar':
-        EventosController::buscar();
+        EventoController::buscar();
         break;
     case $aux.'/detalhesEvento':
-        EventosController::detalhesEvento();
+        EventoController::detalhesEvento();
         break;
     case $aux.'/removerParticipante':
-        EventosController::removerParticipante();
+        EventoController::removerParticipante();
         break;
     case $aux.'/exportarEventoXml':
-        EventosController::exportarEventoXml();
+        EventoController::exportarEventoXml();
         break;
     case $aux.'/exportarEventoPdf':
-        EventosController::exportarEventoPdf();
+        EventoController::exportarEventoPdf();
         break;
     default:
         header('Location: /app-jabulani/login');

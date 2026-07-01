@@ -1,6 +1,6 @@
 <?php
 
-class EventosController
+class EventoController
 {
     private static function verificarAdmin(): void
     {
