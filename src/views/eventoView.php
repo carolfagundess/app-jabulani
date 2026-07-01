@@ -26,6 +26,17 @@
                         <input type="hidden" name="id" value="<?=htmlspecialchars($evento['id'], ENT_QUOTES, 'UTF-8')?>">
                         <input type="submit" value="Excluir">
                     </form>
+                    <?php if (isset($_SESSION['admin_id'])): ?>
+                    <td>
+                        </td>
+                <?php elseif (isset($_SESSION['usuario_id'])): ?>
+                    <td>
+                        <form action="/app-jabulani/inscrever" method="post">
+                            <input type="hidden" name="idEvento" value="<?=htmlspecialchars($evento['id'], ENT_QUOTES, 'UTF-8')?>">
+                            <input type="submit" value="Participar">
+                        </form>
+                    </td>
+                <?php endif; ?>
                 </td>
                 </tr>
                 <?php endif; ?>

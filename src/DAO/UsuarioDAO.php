@@ -49,4 +49,17 @@ class UsuarioDAO{
             return false;
         }
     }
+    public function excluirUsuario(int $id): bool
+    {
+        try {
+            $sql = 'DELETE FROM usuarios WHERE idUsuario = ?';
+            $stmt = $this->conexao->prepare($sql);
+            $stmt->bindParam(1, $id, PDO::PARAM_INT);
+            return $stmt->execute();
+        } catch (PDOException $e) {
+            echo "Erro ao excluir usuário: " . $e->getMessage();
+            return false;
+        }
+    }
+    
 }

@@ -64,6 +64,21 @@ switch ($requisicao) {
     case $aux.'excluirEvento':
         EventosController::excluirEvento();
         break;
+        case $aux.'meusEventos':
+        EventosController::meusEventos();
+        break;
+    case $aux.'excluirUsuario':
+        UsuarioController::excluirUsuario();
+        break;
+    case $aux.'api/eventos':
+        EventosController::listarEventosAPI();
+        break;
+    case $aux.'api/usuarios':
+        UsuarioController::listarUsuariosAPI();
+        break;
+    case $aux.'inscrever':
+        EventosController::inscrever();
+        break;
     default:
         echo "Página não encontrada!";
         break;
