@@ -94,8 +94,11 @@ switch ($requisicao) {
     case $aux.'/exportarEventoPdf':
         EventoController::exportarEventoPdf();
         break;
+    case $aux.'/erro':
+        BasicoController::erro();
+        break;
     default:
-        header('Location: /app-jabulani/login');
+        header('Location: /app-jabulani/erro');
         exit;
 }
 ?>
