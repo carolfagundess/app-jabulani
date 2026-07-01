@@ -74,4 +74,18 @@ class EventoDao
         }
     }
 
+    public function buscarEventos(string $termo): array {
+        try {
+            $sql = "SELECT id, titulo, descricao, `local`, dataEvento, registroCriado 
+                    FROM eventos 
+                    WHERE titulo LIKE :termo OR descricao LIKE :termo";
+            $stmt = $this->conexao->prepare($sql);
+            $stmt->bindValue(':termo', '%' . $termo . '%', PDO::PARAM_STR);
+            $stmt->execute();
+            return $stmt->fetchAll(PDO::FETCH_ASSOC);
+        } catch (PDOException $e) {
+            return [];
+        }
+    }
+
 }

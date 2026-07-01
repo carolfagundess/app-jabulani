@@ -15,9 +15,8 @@
                 <td><?=htmlspecialchars($evento['descricao'], ENT_QUOTES, 'UTF-8')?></td>
                 <td><?=htmlspecialchars($evento['local'], ENT_QUOTES, 'UTF-8')?></td>
                 <td><?=htmlspecialchars($evento['dataEvento'], ENT_QUOTES, 'UTF-8')?></td>
-                <?php if (isset($_SESSION['admin_id'])): ?>
                     
-                <td>
+                <td> <?php if (isset($_SESSION['admin_id'])): ?>
                     <form action="/app-jabulani/alterarEvento" method="post">
                         <input type="hidden" name="id" value="<?=htmlspecialchars($evento['id'], ENT_QUOTES, 'UTF-8')?>">
                         <input type="submit" value="Alterar">
@@ -26,9 +25,7 @@
                         <input type="hidden" name="id" value="<?=htmlspecialchars($evento['id'], ENT_QUOTES, 'UTF-8')?>">
                         <input type="submit" value="Excluir">
                     </form>
-                    <?php if (isset($_SESSION['admin_id'])): ?>
-                    <td>
-                        </td>
+                    
                 <?php elseif (isset($_SESSION['usuario_id'])): ?>
                     <td>
                         <form action="/app-jabulani/inscrever" method="post">
@@ -39,7 +36,6 @@
                 <?php endif; ?>
                 </td>
                 </tr>
-                <?php endif; ?>
             <?php
             }
         ?>

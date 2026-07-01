@@ -6,6 +6,15 @@
     <title>Document</title>
 </head>
 <body>
+    
+    <?php if (isset($_SESSION['mensagem_sucesso'])): ?> 
+    <div style="background-color: #d4edda; color: #155724; padding: 10px; margin-bottom: 15px; border: 1px solid #c3e6cb; border-radius: 5px;">
+        <?= $_SESSION['mensagem_sucesso']; ?>
+    </div>
+
+    <?php unset($_SESSION['mensagem_sucesso']); ?>
+    <?php endif; ?>
+
     <h1>Eventos em que estou inscrito</h1>
     <table border="1">
         <tr>
@@ -23,6 +32,9 @@
             </tr>
         <?php endforeach; ?>
     </table>
+        <p>Voltar para a página inicial</p>
+        <a href="/app-jabulani/listarEventos">Página Inicial</a>
+    
 
 </body>
 </html>

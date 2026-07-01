@@ -35,7 +35,7 @@ class EventoModel{
 
     public static function listarEventosAPI()
     {
-        require_once 'src/DAO/EventoDao.php'; // Ajuste o caminho se necessário
+        require_once 'src/DAO/EventoDao.php'; 
         $eventoDao = new EventoDao();
         $eventos = $eventoDao->getEventos();
 

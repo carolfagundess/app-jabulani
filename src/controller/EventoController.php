@@ -46,8 +46,8 @@ class EventosController
 
             $retornoInserir = $model->inserirEvento($titulo, $descricao, $local, $dataEvento);
 
-            header('Location: /app-jabulani/listarEventos'); 
-            exit; 
+            header('Location: /app-jabulani/listarEventos');
+            exit;
 
         } else {
             echo "Mensagem de erro: Faltam dados no formulário ou método incorreto.";
@@ -57,7 +57,7 @@ class EventosController
     public static function alterarEvento(): void
     {
         self::verificarAdmin();
-        if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['id'] )) {
+        if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['id'])) {
             $auxId = (int) trim($_POST['id']);
             $auxTitulo = trim($_POST['titulo']);
 
@@ -139,12 +139,12 @@ class EventosController
 
     public static function listarEventosAPI()
     {
-        require_once 'src/DAO/EventoDao.php'; // Ajuste o caminho se necessário
+        require_once 'src/DAO/EventoDao.php';
         $eventoDao = new EventoDao();
         $eventos = $eventoDao->getEventos();
 
         header('Content-Type: application/json; charset=utf-8');
-        echo json_encode($eventos);
+        echo json_encode($eventos, JSON_UNESCAPED_UNICODE);
         exit;
     }
     public static function inscrever(): void
@@ -153,7 +153,7 @@ class EventosController
             header('Location: /app-jabulani/login');
             exit;
         }
-        
+
         if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['idEvento'])) {
             $idEvento = (int) trim($_POST['idEvento']);
             $idUsuario = $_SESSION['usuario_id'];
@@ -165,5 +165,15 @@ class EventosController
             header('Location: /app-jabulani/meusEventos');
             exit;
         }
+    }
+
+    public static function buscar(): void
+    {
+        $termo = isset($_GET['q']) ? trim($_GET['q']) : '';
+        require_once 'src/DAO/EventoDao.php';
+        $dao = new EventoDao();
+        $listaEventos = $dao->buscarEventos($termo);
+
+        require 'src/views/eventoView.php';
     }
 }

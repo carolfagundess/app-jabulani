@@ -22,7 +22,11 @@ class UsuarioEventoDAO {
             $stmt = $this->conexao->prepare($sql);
             $stmt->bindParam(1, $idUsuario, PDO::PARAM_INT);
             $stmt->bindParam(2, $idEvento, PDO::PARAM_INT);
+            
+            $_SESSION['mensagem_sucesso'] = "Você foi adicionado com sucesso!";
             return $stmt->execute();
+
+
         } catch (PDOException $e) {
             echo "Erro ao inscrever: " . $e->getMessage();
             return false;

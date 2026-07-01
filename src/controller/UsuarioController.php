@@ -23,12 +23,12 @@ class UsuarioController
             if ($usuario) {
                 if (password_verify($senhaDigitada, $usuario['senha'])) {
 
-                if( $usuario['tipoUsuario'] === 'admin') {
-                    $_SESSION['admin_id'] = $usuario['idUsuario'];
-                } else {
+                    if ($usuario['tipoUsuario'] === 'admin') {
+                        $_SESSION['admin_id'] = $usuario['idUsuario'];
+                    } else {
 
-                    $_SESSION['usuario_id'] = $usuario['idUsuario'];
-                }
+                        $_SESSION['usuario_id'] = $usuario['idUsuario'];
+                    }
                     header('Location: /app-jabulani/listarEventos');
                     exit;
                 } else {
@@ -45,15 +45,20 @@ class UsuarioController
     public static function logout()
     {
         $_SESSION = array();
-        
+
         if (ini_get("session.use_cookies")) {
             $params = session_get_cookie_params();
-            setcookie(session_name(), '', time() - 42000,
-                $params["path"], $params["domain"],
-                $params["secure"], $params["httponly"]
+            setcookie(
+                session_name(),
+                '',
+                time() - 42000,
+                $params["path"],
+                $params["domain"],
+                $params["secure"],
+                $params["httponly"]
             );
         }
-        
+
         session_destroy();
         header('Location: /app-jabulani/login');
         exit;
@@ -76,7 +81,7 @@ class UsuarioController
         ) {
             $nomeUsuario = trim($_POST['nomeUsuario']);
             $email = trim($_POST['email']);
-            $senha = $_POST['senha']; 
+            $senha = $_POST['senha'];
             $confirmarSenha = $_POST['confirmarSenha'];
 
             if ($senha !== $confirmarSenha) {
@@ -103,12 +108,12 @@ class UsuarioController
 
     public static function listarUsuariosAPI()
     {
-        require_once 'src/DAO/UsuarioDAO.php'; // Ajuste o caminho se necessário
+        require_once 'src/DAO/UsuarioDAO.php';
         $usuarioDao = new UsuarioDAO();
         $usuarios = $usuarioDao->getUsuarios();
 
         header('Content-Type: application/json; charset=utf-8');
-        echo json_encode($usuarios);
+        echo json_encode($usuarios, JSON_UNESCAPED_UNICODE);
         exit;
     }
     public static function excluirUsuario()

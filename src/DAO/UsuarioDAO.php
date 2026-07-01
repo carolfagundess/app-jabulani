@@ -1,6 +1,7 @@
 <?php
 
-class UsuarioDAO{
+class UsuarioDAO
+{
     private $conexao;
 
     public function __construct()
@@ -19,16 +20,16 @@ class UsuarioDAO{
     }
 
     public function getUsuarioByUsername(string $username)
-    {   
-        try{
-        $sql = "SELECT idUsuario, nomeUsuario, email, senha, tipoUsuario FROM usuarios WHERE nomeUsuario = ? OR email = ?";
-        $stmt = $this->conexao->prepare($sql);
-        $stmt->bindParam(1, $username, PDO::PARAM_STR);
-        $stmt->bindParam(2, $username, PDO::PARAM_STR);
-        $stmt->execute();
-        $usuario = $stmt->fetch(PDO::FETCH_ASSOC);
-        return $usuario ?: null;
-        }catch (PDOException $e) {
+    {
+        try {
+            $sql = "SELECT idUsuario, nomeUsuario, email, senha, tipoUsuario FROM usuarios WHERE nomeUsuario = ? OR email = ?";
+            $stmt = $this->conexao->prepare($sql);
+            $stmt->bindParam(1, $username, PDO::PARAM_STR);
+            $stmt->bindParam(2, $username, PDO::PARAM_STR);
+            $stmt->execute();
+            $usuario = $stmt->fetch(PDO::FETCH_ASSOC);
+            return $usuario ?: null;
+        } catch (PDOException $e) {
             echo "Erro ao buscar usuario: " . $e->getMessage();
             return false;
         }
@@ -61,5 +62,18 @@ class UsuarioDAO{
             return false;
         }
     }
-    
+
+    public function buscarUsuarios(string $termo): array
+    {
+        try {
+            $sql = "SELECT idUsuario, nomeUsuario, email FROM usuarios WHERE nomeUsuario LIKE :termo OR email LIKE :termo";
+            $stmt = $this->conexao->prepare($sql);
+            $stmt->bindValue(':termo', '%' . $termo . '%', PDO::PARAM_STR);
+            $stmt->execute();
+            return $stmt->fetchAll(PDO::FETCH_ASSOC);
+        } catch (PDOException $e) {
+            return [];
+        }
+    }
+
 }
